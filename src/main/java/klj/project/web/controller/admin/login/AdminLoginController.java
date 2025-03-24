@@ -2,14 +2,11 @@ package klj.project.web.controller.admin.login;
 
 
 import klj.project.domain.admin.Admin;
-import klj.project.domain.user.user.User;
-import klj.project.service.admin.login.LoginService;
+import klj.project.service.admin.login.AdminLoginService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.login.AdminLoginDto;
 import klj.project.web.dto.user.user.login.jwt.TokenDto;
-import klj.project.web.dto.user.user.login.oauth.NaverOauthRequestDto;
-import klj.project.web.dto.user.user.login.oauth.OauthTokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class LoginController {
+public class AdminLoginController {
 
     // 관리자 로그인 서비스
-    private final LoginService loginService;
+    private final AdminLoginService loginService;
 
     @PostMapping("/admin/login")
     public KljResponse<TokenDto> loginAdmin(@RequestBody AdminLoginDto adminLoginDto) {
