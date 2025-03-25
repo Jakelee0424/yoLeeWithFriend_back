@@ -33,13 +33,21 @@ public class AdminLoginController {
             // 관리자 로그인 로직 타기
             Admin admin = loginService.userAdminLogin(id,passWord);
 
-            // 내부 JwtToken 발급
-            TokenDto tokenDto = loginService.authorize(admin);
+            if(admin !=null){   // 관리자 발견
+                // 내부 JwtToken 발급
+                TokenDto tokenDto = loginService.authorize(admin);
+                return KljResponse
+                        .create()
+                        .succeed()
+                        .buildWith(tokenDto);
+            }else {
 
-            return KljResponse
-                    .create()
-                    .succeed()
-                    .buildWith(tokenDto);
+                return KljResponse
+                        .create()
+                        .succeed()
+                        .buildWith(null);
+            }
+
 
         }catch (Exception e){
             log.info(e.toString());
