@@ -23,14 +23,7 @@ import java.util.Collection;
 @Slf4j
 public class AdminLoginService {
 
-
-    private final WebClient webClient;
-
-    private final UserQuerydslRepository userQuerydslRepository;
-
     private final AdminQuerydslRepository adminQuerydslRepository;
-
-    private final UserRepository userRepository;
 
     private final TokenProvider tokenProvider;
 
