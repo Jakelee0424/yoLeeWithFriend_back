@@ -6,6 +6,7 @@ import klj.project.service.admin.admin.AdminService;
 import klj.project.service.admin.login.AdminLoginService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
+import klj.project.web.dto.admin.admin.AdminSaveDto;
 import klj.project.web.dto.admin.login.AdminLoginDto;
 import klj.project.web.dto.user.user.login.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,28 @@ public class AdminController {
         try {
 
             Admin admin= adminService.findAdminBySn(adminSn);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(admin);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+    @PostMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<Admin> saveAdmin(@RequestBody AdminSaveDto adminSaveDto) {
+
+        try {
+
+            Admin admin= adminService.saveAdmin(adminSaveDto);
 
             return KljResponse
                     .create()
