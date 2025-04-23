@@ -61,6 +61,11 @@ public class AdminService {
         }
     }
 
+    public void deleteAdmin(Long adminSn) throws Exception {
+        adminRepository.deleteById(adminSn);
+
+    }
+
 
 
 }

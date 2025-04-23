@@ -25,21 +25,26 @@ public class User {
 
     private String nickName;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
 
     @Builder
-    public User(String oauthId, OauthType oauthType, Authority authority, String nickName) {
+    public User(String oauthId, OauthType oauthType, Authority authority, String nickName, UserStatus status) {
         this.oauthId = oauthId;
         this.oauthType = oauthType;
         this.authority = authority;
         this.nickName = nickName;
+        this.status = status;
     }
 
-    public static  User createUser (String oauthId, OauthType oauthType, Authority authority, String nickName){
+    public static  User createUser (String oauthId, OauthType oauthType, Authority authority, String nickName, UserStatus status){
         return User.builder()
                 .oauthId(oauthId)
                 .oauthType(oauthType)
                 .authority(authority)
                 .nickName(nickName)
+                .status(status)
                 .build();
     }
 
@@ -48,6 +53,10 @@ public class User {
         return this;
     }
 
+    public User changeUserStatus (UserStatus status){
+        this.status = status;
+        return this;
+    }
 
 
 }

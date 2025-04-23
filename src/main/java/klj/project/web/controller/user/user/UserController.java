@@ -1,14 +1,14 @@
-package klj.project.web.controller.admin.admin;
+package klj.project.web.controller.user.user;
 
 
 import klj.project.domain.admin.Admin;
+import klj.project.domain.user.user.User;
 import klj.project.service.admin.admin.AdminService;
-import klj.project.service.admin.login.AdminLoginService;
+import klj.project.service.user.user.UserService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.admin.AdminSaveDto;
-import klj.project.web.dto.admin.login.AdminLoginDto;
-import klj.project.web.dto.user.user.login.jwt.TokenDto;
+import klj.project.web.dto.user.user.UserStatusDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,24 +20,24 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class AdminController {
+public class UserController {
 
     // 관리자  서비스
-    private final AdminService adminService;
+    private final UserService userService;
 
-    @PostMapping("/admin/all")
-    public KljResponse<List<Admin>> findAdminList() {
+    @PostMapping("/user/all")
+    public KljResponse<List<User>> findUserList() {
 
         try {
 
-            List<Admin> adminList = adminService.findAdminList();
+            List<User> userList = userService.findUserList();
 
 
 
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(adminList);
+                    .buildWith(userList);
 
         }catch (Exception e){
             log.info(e.toString());
@@ -49,57 +49,12 @@ public class AdminController {
 
     }
 
-
-    @GetMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<Admin> findAdminBySn(@PathVariable("id") Long adminSn) {
-
-        try {
-
-            Admin admin= adminService.findAdminBySn(adminSn);
-
-            return KljResponse
-                    .create()
-                    .succeed()
-                    .buildWith(admin);
-
-        }catch (Exception e){
-            log.info(e.toString());
-            return KljResponse
-                    .create()
-                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
-                    .buildWith(null);
-        }
-
-    }
-
-    @PostMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<Admin> saveAdmin(@RequestBody AdminSaveDto adminSaveDto) {
+    @PutMapping(path = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<Admin> updateUserStatus(@RequestBody UserStatusDto userStatusDto) {
 
         try {
 
-            Admin admin= adminService.saveAdmin(adminSaveDto);
-
-            return KljResponse
-                    .create()
-                    .succeed()
-                    .buildWith(admin);
-
-        }catch (Exception e){
-            log.info(e.toString());
-            return KljResponse
-                    .create()
-                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
-                    .buildWith(null);
-        }
-
-    }
-
-    @DeleteMapping(path = "/admin/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<Admin> deleteAdmin(@PathVariable("id") Long adminSn) {
-
-        try {
-
-            adminService.deleteAdmin(adminSn);
+            userService.updateUserStatus(userStatusDto);
 
             return KljResponse
                     .create()
@@ -115,5 +70,29 @@ public class AdminController {
         }
 
     }
+
+    @DeleteMapping(path = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<Admin> deleteUser(@PathVariable("id") Long userSn) {
+
+        try {
+
+            userService.deleteUser(userSn);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(null);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+
 
 }
