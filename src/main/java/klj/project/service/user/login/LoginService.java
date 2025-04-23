@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import klj.project.domain.user.user.Authority;
 import klj.project.domain.user.user.OauthType;
 import klj.project.domain.user.user.User;
+import klj.project.domain.user.user.UserStatus;
 import klj.project.jwt.CustomAuthority;
 import klj.project.jwt.TokenProvider;
 import klj.project.repository.user.user.UserQuerydslRepository;
@@ -98,7 +99,7 @@ public class LoginService {
 
         if(user == null){
             long count = userRepository.count();
-            User saveUser = User.createUser(oauthId, OauthType.naver, Authority.user, "피트니스새싹" + count);
+            User saveUser = User.createUser(oauthId, OauthType.naver, Authority.user, "피트니스새싹" + count, UserStatus.nomal);
             userRepository.save(saveUser);
             user = saveUser;
         }
@@ -163,7 +164,7 @@ public class LoginService {
 
         if(user == null){
             long count = userRepository.count();
-            User saveUser = User.createUser(oauthId, OauthType.kakao, Authority.user, "피트니스새싹" + count);
+            User saveUser = User.createUser(oauthId, OauthType.kakao, Authority.user, "피트니스새싹" + count, UserStatus.nomal);
             userRepository.save(saveUser);
             user = saveUser;
         }

@@ -1,6 +1,6 @@
 package klj.project.domain.user.user;
 
-public enum Authority {
+public enum UserStatus {
 
-    user
+    nomal, ban
 }
