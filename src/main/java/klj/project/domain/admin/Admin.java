@@ -47,8 +47,9 @@ public class Admin {
                 .build();
     }
 
-    public Admin changeName (String name){
-        this.name = name;
+    public Admin changeAdminInfo (String adminName, String adminPassword){
+        this.name = adminName;
+        this.passWord = adminPassword;
         return this;
     }
 
