@@ -10,5 +10,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     long count();
 
+    Optional<Admin> findById(String id);
+
 
 }
