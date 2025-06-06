@@ -2,11 +2,8 @@ package klj.project.repository.admin;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import klj.project.domain.admin.Admin;
-import klj.project.domain.admin.QAdmin;
-import klj.project.domain.user.user.OauthType;
-import klj.project.domain.user.user.QUser;
-import klj.project.domain.user.user.User;
+import klj.project.domain.admin.admin.Admin;
+import klj.project.domain.admin.admin.QAdmin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

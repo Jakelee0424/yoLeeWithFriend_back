@@ -1,7 +1,7 @@
 package klj.project.web.controller.admin.login;
 
 
-import klj.project.domain.admin.Admin;
+import klj.project.domain.admin.admin.Admin;
 import klj.project.service.admin.login.AdminLoginService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
