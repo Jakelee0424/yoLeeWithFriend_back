@@ -1,4 +1,4 @@
-package klj.project.web.controller.board;
+package klj.project.web.controller.admin.board;
 
 import klj.project.service.admin.baord.BoardMngrService;
 import klj.project.web.dto.Error;

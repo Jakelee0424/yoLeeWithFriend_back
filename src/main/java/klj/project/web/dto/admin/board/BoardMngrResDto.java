@@ -14,9 +14,11 @@ import java.time.LocalDateTime;
 public class BoardMngrResDto {
     private Long boardId;
     private String boardName;
-    private String boardCodeId;
+    private String brandCodeId;
     private String useYn;
+    private String delYn;
     private LocalDateTime createdDate;
     private LocalDateTime modifyDate;
     private String boardCategoryCodeId;
+
 }

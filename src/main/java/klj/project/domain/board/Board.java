@@ -23,13 +23,16 @@ public class Board {
     private String boardName;
 
     @Column(name = "brand_code_id")
-    private String boardCodeId;
+    private String brandCodeId;
 
     @Column(name = "use_yn")
     private String useYn;
 
+    @Column(name = "del_yn")
+    private String delYn;
+
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
 
     @LastModifiedDate
     private LocalDateTime modifyDate;
@@ -38,17 +41,17 @@ public class Board {
     private String boardCategoryCodeId;
 
     @Builder
-    public Board(String boardName, String boardCodeId, String useYn, String boardCategoryCodeId) {
+    public Board(String boardName, String brandCodeId, String useYn, String boardCategoryCodeId) {
         this.boardName = boardName;
-        this.boardCodeId = boardCodeId;
+        this.brandCodeId = brandCodeId;
         this.useYn = useYn;
         this.boardCategoryCodeId = boardCategoryCodeId;
     }
 
-    public static Board createBoard (String boardName, String boardCodeId, String useYn, String boardCategoryCodeId){
+    public static Board createBoard (String boardName, String brandCodeId, String useYn, String boardCategoryCodeId){
         return Board.builder()
                 .boardName(boardName)
-                .boardCodeId(boardCodeId)
+                .brandCodeId(brandCodeId)
                 .useYn(useYn)
                 .boardCategoryCodeId(boardCategoryCodeId)
                 .build();
