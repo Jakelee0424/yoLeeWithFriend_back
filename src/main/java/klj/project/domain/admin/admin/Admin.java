@@ -1,4 +1,4 @@
-package klj.project.domain.admin;
+package klj.project.domain.admin.admin;
 
 import jakarta.persistence.*;
 import klj.project.domain.user.user.Authority;

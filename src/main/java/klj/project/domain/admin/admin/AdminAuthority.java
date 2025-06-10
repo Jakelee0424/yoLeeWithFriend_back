@@ -1,4 +1,4 @@
-package klj.project.domain.admin;
+package klj.project.domain.admin.admin;
 
 public enum AdminAuthority {
 
