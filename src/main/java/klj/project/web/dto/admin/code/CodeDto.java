@@ -1,8 +1,11 @@
 package klj.project.web.dto.admin.code;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CodeDto {
 
     private String id;

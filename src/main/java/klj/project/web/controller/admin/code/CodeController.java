@@ -1,9 +1,12 @@
-package klj.project.web.controller.admin.board;
+package klj.project.web.controller.admin.code;
 
-import klj.project.service.admin.baord.BoardMngrService;
+
+import klj.project.domain.code.Code;
+import klj.project.service.admin.code.CodeService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.admin.code.CodeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,24 +20,22 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardMngrController {
+public class CodeController {
 
-    // 게시물 관리 서비스
-    private final BoardMngrService boardMngrService;
+    // 코드 서비스
+    private final CodeService codeService;
 
-    @GetMapping("/boardMngr/all")
-    public KljResponse<List<BoardMngrResDto>> findBoardMngrList() {
+    @GetMapping(path = "/code/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<CodeDto> findCodeById(@PathVariable("id") String codeId) {
 
         try {
 
-            List<BoardMngrResDto> boardMngrList = boardMngrService.findBoardMngrList();
-
-
+            CodeDto code = codeService.getCode(codeId);
 
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(boardMngrList);
+                    .buildWith(code);
 
         }catch (Exception e){
             log.info(e.toString());
@@ -46,17 +47,18 @@ public class BoardMngrController {
 
     }
 
-    @GetMapping(path = "/board/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<BoardMngrResDto> findBoardById(@PathVariable("id") Long boardId) {
+    @GetMapping("/code/all/{id}")
+    public KljResponse<List<CodeDto>> findCodeListByParentId(@PathVariable("id") String parentCodeId) {
 
         try {
 
-            BoardMngrResDto boardMngrResDto = boardMngrService.findBoardById(boardId);
+            List<CodeDto> codeList = codeService.getCodeList(parentCodeId);
+
 
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(boardMngrResDto);
+                    .buildWith(codeList);
 
         }catch (Exception e){
             log.info(e.toString());
@@ -67,4 +69,6 @@ public class BoardMngrController {
         }
 
     }
+
+
 }

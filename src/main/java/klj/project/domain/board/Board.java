@@ -1,6 +1,7 @@
 package klj.project.domain.board;
 
 import jakarta.persistence.*;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,7 +58,18 @@ public class Board {
                 .build();
     }
 
-
+    public BoardMngrResDto toResponseDto() {
+        return new BoardMngrResDto(
+                this.boardId,
+                this.boardName,
+                this.brandCodeId,
+                this.useYn,
+                this.delYn,
+                this.createDate, // responseDto의 createdDate와 매핑됩니다.
+                this.modifyDate,
+                this.boardCategoryCodeId
+        );
+    }
 
 
 
