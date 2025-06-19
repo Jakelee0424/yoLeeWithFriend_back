@@ -1,13 +1,11 @@
 package klj.project.web.controller.user.user;
 
 
-import klj.project.domain.admin.Admin;
+import klj.project.domain.admin.admin.Admin;
 import klj.project.domain.user.user.User;
-import klj.project.service.admin.admin.AdminService;
 import klj.project.service.user.user.UserService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
-import klj.project.web.dto.admin.admin.AdminSaveDto;
 import klj.project.web.dto.user.user.UserStatusDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
