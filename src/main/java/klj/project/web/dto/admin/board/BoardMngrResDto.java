@@ -1,11 +1,13 @@
 package klj.project.web.dto.admin.board;
 
+import klj.project.domain.code.Code;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,5 +22,6 @@ public class BoardMngrResDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifyDate;
     private String boardCategoryCodeId;
+    private String nuinfoId;
 
 }

@@ -26,6 +26,12 @@ public class Board {
     @Column(name = "brand_code_id")
     private String brandCodeId;
 
+    @Column(name = "file_group_id")
+    private Long fileGroupId;
+
+    @Column(name = "nuinfo_id")
+    private String nuinfoId;
+
     @Column(name = "use_yn")
     private String useYn;
 
@@ -42,19 +48,23 @@ public class Board {
     private String boardCategoryCodeId;
 
     @Builder
-    public Board(String boardName, String brandCodeId, String useYn, String boardCategoryCodeId) {
+    public Board(String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId) {
         this.boardName = boardName;
         this.brandCodeId = brandCodeId;
         this.useYn = useYn;
         this.boardCategoryCodeId = boardCategoryCodeId;
+        this.fileGroupId = fileGroupId;
+        this.nuinfoId = nuinfoId;
     }
 
-    public static Board createBoard (String boardName, String brandCodeId, String useYn, String boardCategoryCodeId){
+    public static Board createBoard (String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId){
         return Board.builder()
                 .boardName(boardName)
                 .brandCodeId(brandCodeId)
                 .useYn(useYn)
                 .boardCategoryCodeId(boardCategoryCodeId)
+                .fileGroupId(fileGroupId)
+                .nuinfoId(nuinfoId)
                 .build();
     }
 
@@ -67,7 +77,8 @@ public class Board {
                 this.delYn,
                 this.createDate, // responseDto의 createdDate와 매핑됩니다.
                 this.modifyDate,
-                this.boardCategoryCodeId
+                this.boardCategoryCodeId,
+                this.nuinfoId
         );
     }
 

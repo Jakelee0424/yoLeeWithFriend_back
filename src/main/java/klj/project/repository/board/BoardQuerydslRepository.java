@@ -17,7 +17,7 @@ public class BoardQuerydslRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<BoardMngrResDto> findAllBoardMngrList (){
-
+        //List<BoardMngrResDto> boardMngrList = new ArrayList<>();
         List<BoardMngrResDto> boardMngrList = queryFactory
                 .select(Projections.fields(BoardMngrResDto.class,
                         QBoard.board.boardId,
@@ -26,7 +26,8 @@ public class BoardQuerydslRepository {
                         QBoard.board.boardCategoryCodeId,
                         QBoard.board.useYn,
                         QBoard.board.createDate,
-                        QBoard.board.modifyDate
+                        QBoard.board.modifyDate,
+                        QBoard.board.nuinfoId
                 )).from(QBoard.board)
                 .where(QBoard.board.delYn.eq("N"))
                 .fetch();
