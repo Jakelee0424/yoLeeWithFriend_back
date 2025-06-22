@@ -25,6 +25,7 @@ public class FileQuerydslRepository {
                         files.fileGroup,
                         files.fileSize,
                         files.fileType,
+                        files.filePath,
                         files.originalName,
                         files.storedName,
                         files.uploadDate

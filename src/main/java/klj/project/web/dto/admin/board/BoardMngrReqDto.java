@@ -20,5 +20,6 @@ public class BoardMngrReqDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifyDate;
     private String boardCategoryCodeId;
+    private String nuinfoId;
 
 }
