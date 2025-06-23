@@ -23,5 +23,6 @@ public class BoardMngrResDto {
     private LocalDateTime modifyDate;
     private String boardCategoryCodeId;
     private String nuinfoId;
+    private String imgUrl;
 
 }

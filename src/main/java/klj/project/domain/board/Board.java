@@ -1,6 +1,7 @@
 package klj.project.domain.board;
 
 import jakarta.persistence.*;
+import klj.project.domain.admin.admin.Admin;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,6 +56,7 @@ public class Board {
         this.boardCategoryCodeId = boardCategoryCodeId;
         this.fileGroupId = fileGroupId;
         this.nuinfoId = nuinfoId;
+        this.delYn = "N";
     }
 
     public static Board createBoard (String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId){
@@ -78,10 +80,23 @@ public class Board {
                 this.createDate, // responseDto의 createdDate와 매핑됩니다.
                 this.modifyDate,
                 this.boardCategoryCodeId,
-                this.nuinfoId
+                this.nuinfoId,
+                ""
         );
     }
 
+    public Board deleteBoard (){
+        this.delYn = "Y";
+        return this;
+    }
+
+    public Board changeBoardInfo (String boardName, String brandCodeId, String useYn, Long fileGroupId){
+        this.boardName = boardName;
+        this.brandCodeId = brandCodeId;
+        this.useYn = useYn;
+        this.fileGroupId = fileGroupId;
+        return this;
+    }
 
 
 }

@@ -52,5 +52,10 @@ public class Nuinfo {
         );
     }
 
+    public Nuinfo changeNuInfo (String value){
+        this.value = value;
+        return this;
+    }
+
 
 }

@@ -23,7 +23,7 @@ public class CodeQuerydslRepository {
                         QCode.code.id
                 )).from(QCode.code)
                 .where(QCode.code.codeParent.id.eq(codeParentId))
-                .orderBy(QCode.code.name.asc())
+                .orderBy(QCode.code.codeOrder.asc())
                 .fetch();
         return codeList;
     }
