@@ -28,7 +28,6 @@ public class AdminLoginService {
 
     public Admin userAdminLogin(String adminId, String passWord){
         Admin admin = adminQuerydslRepository.findByAdminIdAndPassWord(adminId, passWord);
-
         log.info("admin info response: {}", admin);
         return admin;
     }
