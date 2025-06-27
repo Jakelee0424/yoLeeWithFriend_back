@@ -1,0 +1,48 @@
+package klj.project.web.controller.admin.banner;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import klj.project.domain.admin.admin.Admin;
+import klj.project.service.admin.admin.AdminService;
+import klj.project.service.admin.banner.BannerService;
+import klj.project.service.admin.baord.BoardMngrService;
+import klj.project.web.controller.admin.admin.AdminController;
+import klj.project.web.dto.Error;
+import klj.project.web.dto.KljResponse;
+import klj.project.web.dto.admin.banner.BannerResDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequiredArgsConstructor
+@Slf4j
+public class BannerController {
+	
+	private final BannerService bannerService;
+	
+    @GetMapping(path = "/bannerMngr/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<List<BannerResDto>> getBannerList() {
+
+        try {
+        	List<BannerResDto> bannerList = bannerService.getBannerList();
+        	
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(bannerList);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+    }
+}
