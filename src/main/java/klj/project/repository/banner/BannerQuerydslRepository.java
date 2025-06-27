@@ -30,10 +30,28 @@ public class BannerQuerydslRepository {
                         QBanner.banner.bannerName,
                         QBanner.banner.validDays,
                         QBanner.banner.level,
-                        QBanner.banner.dueDate
+                        QBanner.banner.createdAt,
+                        QBanner.banner.delYn
                 )).from(QBanner.banner)
+                .where(QBanner.banner.delYn.eq("N"))
                 .fetch();
 		 
+		return bannerList;
+	}
+
+	public List<BannerResDto> findExpiredBannerList() {
+		 List<BannerResDto> bannerList =  queryFactory
+	                .select(Projections.fields(BannerResDto.class,
+	                        QBanner.banner.bannerId,
+	                        QBanner.banner.bannerName,
+	                        QBanner.banner.validDays,
+	                        QBanner.banner.level,
+	                        QBanner.banner.createdAt,
+	                        QBanner.banner.delYn
+	                )).from(QBanner.banner)
+	                .where(QBanner.banner.delYn.eq("Y"))
+	                .fetch();
+			 
 		return bannerList;
 	}
 

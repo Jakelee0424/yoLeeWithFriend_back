@@ -15,8 +15,9 @@ public class BannerResDto {
 	
     private Long bannerId;
     private String bannerName;
-    private LocalDateTime dueDate;
-    private int validDays;
-    private int level;
+    private LocalDateTime createdAt;
+    private Integer validDays;
+    private Integer level;
+    private String delYn;
     
 }
