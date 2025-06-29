@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.time.LocalDateTime;
+
 @Component
 @Slf4j
 public class LoggerInterceptor implements HandlerInterceptor {
@@ -34,6 +36,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
         String localAddr = request.getLocalAddr();
         String queryString = request.getQueryString();
         String method = request.getMethod();
+        LocalDateTime localDateTime = LocalDateTime.now();
         LogsType logsType = LogsType.GET;
 
         switch (method) {
@@ -53,7 +56,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
                 logsType = LogsType.GET;
         }
 
-        Logs logs = new Logs(0L,logsType,queryString,localAddr);
+        Logs logs = new Logs(0L, logsType, queryString, localAddr, localDateTime, requestURI);
         logsRepository.save(logs);
 
 
