@@ -30,20 +30,29 @@ public class Logs {
     @CreatedDate
     private LocalDateTime createdDate;
 
+    private String url;
+
     @Builder
-    public Logs(Long userId, LogsType logsType, String description, String ipAddress) {
+    public Logs(Long userId, LogsType logsType, String description, String ipAddress, LocalDateTime createdDate, String url) {
         this.userId = userId;
         this.logsType = logsType;
         this.description = description;
         this.ipAddress = ipAddress;
+        this.createdDate = createdDate;
+        this.url = url;
     }
 
-    public static  Logs createLogs (Long userId, LogsType logsType, String description, String ipAddress){
+    public static  Logs createLogs (
+            Long userId, LogsType logsType, String description, String ipAddress, LocalDateTime createdDate,
+            String url
+    ){
         return Logs.builder()
                 .userId(userId)
                 .logsType(logsType)
                 .description(description)
                 .ipAddress(ipAddress)
+                .createdDate(createdDate)
+                .url(url)
                 .build();
     }
 
