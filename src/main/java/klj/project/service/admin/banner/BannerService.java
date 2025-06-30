@@ -5,10 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import klj.project.domain.banner.Banner;
 import klj.project.domain.board.Board;
+import klj.project.domain.file.FileCategory;
+import klj.project.domain.file.FileGroup;
+import klj.project.domain.file.FileType;
+import klj.project.domain.file.Files;
 import klj.project.repository.banner.BannerQuerydslRepository;
+import klj.project.repository.file.FileGroupRepository;
+import klj.project.repository.file.FileRepository;
+import klj.project.util.FileManageUtil;
 import klj.project.web.dto.admin.banner.BannerLevelReqDto;
 import klj.project.web.dto.admin.banner.BannerReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
@@ -23,6 +31,8 @@ public class BannerService {
 
 	private final BannerRepository bannerRepository;
 	private final BannerQuerydslRepository bannerQuerydslRepository;
+    private final FileGroupRepository fileGroupRepository;
+    private final FileRepository fileRepository;
 	
     public List<BannerResDto> getBannerList(){
         List<BannerResDto> boardMngrList = bannerQuerydslRepository.findAllBannerList();
@@ -49,13 +59,26 @@ public class BannerService {
 		 
 	}
 
-	public List<BannerResDto> insertBanner(BannerReqDto bannerReqDto) {
+	public List<BannerResDto> insertBanner(BannerReqDto bannerReqDto, MultipartFile multipartFile) throws Exception {
+		Long fileGroupId = null;
+		
 		int nextLevel = bannerQuerydslRepository.findMaxLevel() + 1;
 		String bannerName = bannerReqDto.getBannerName();
 		LocalDateTime createdAt = bannerReqDto.getCreatedAt();
 		int validDays = bannerReqDto.getValidDays();
 		
-		Banner banner = Banner.insertBanner(bannerName, createdAt, validDays, nextLevel);
+        if(multipartFile !=null){
+            LocalDateTime localDateTime = LocalDateTime.now();
+            FileGroup fileGroup = FileGroup.createFileGroup(FileCategory.img, "배너이미지", localDateTime);
+            fileGroup = fileGroupRepository.save(fileGroup);
+            fileGroupId = fileGroup.getId();
+            MultipartFile[] multipartFiles = new MultipartFile[1];
+            multipartFiles[0] = multipartFile;
+            List<Files> filesInsertList = FileManageUtil.saveFiles(multipartFiles, fileGroup, FileType.jpg);
+            fileRepository.saveAll(filesInsertList);
+        }
+		
+		Banner banner = Banner.insertBanner(bannerName, createdAt, validDays, nextLevel, fileGroupId);
 		banner = bannerRepository.save(banner);
 		
 		List<BannerResDto> boardMngrList = bannerQuerydslRepository.findAllBannerList();

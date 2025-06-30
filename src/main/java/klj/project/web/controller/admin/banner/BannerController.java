@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import klj.project.domain.admin.admin.Admin;
 import klj.project.service.admin.admin.AdminService;
@@ -23,6 +26,7 @@ import klj.project.web.dto.admin.banner.BannerLevelReqDto;
 import klj.project.web.dto.admin.banner.BannerReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.admin.board.BoardSaveDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -137,10 +141,14 @@ public class BannerController {
     }
     
     @PostMapping(path = "/bannerMngr/insert", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<List<BannerResDto>> insertBanner(@RequestBody BannerReqDto bannerReqDto) {
+    public KljResponse<List<BannerResDto>> insertBanner(@RequestParam("data") String data,
+    													@RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         try {
-            List<BannerResDto> bannerList = bannerService.insertBanner(bannerReqDto);
+        	ObjectMapper mapper = new ObjectMapper();
+        	BannerReqDto bannerReqDto = mapper.readValue(data, BannerReqDto.class);
+        	
+            List<BannerResDto> bannerList = bannerService.insertBanner(bannerReqDto, multipartFile);
 
             return KljResponse
                     .create()

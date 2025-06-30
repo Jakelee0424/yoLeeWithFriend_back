@@ -20,7 +20,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-**/src/main/generated/
+/src/main/generated/
 
 ### IntelliJ IDEA ###
 .idea

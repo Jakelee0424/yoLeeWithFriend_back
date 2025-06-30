@@ -33,9 +33,11 @@ public class BannerQuerydslRepository {
                         QBanner.banner.validDays,
                         QBanner.banner.level,
                         QBanner.banner.createdAt,
-                        QBanner.banner.delYn
+                        QBanner.banner.delYn,
+                        QFiles.files.filePath.as("imgUrl")
                 )).from(QBanner.banner)
                 .where(QBanner.banner.delYn.eq("N"))
+//                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBanner.banner.fileGroupId))
                 .orderBy(QBanner.banner.level.asc())
                 .fetch();
 		 
@@ -50,9 +52,11 @@ public class BannerQuerydslRepository {
 	                        QBanner.banner.validDays,
 	                        QBanner.banner.level,
 	                        QBanner.banner.createdAt,
-	                        QBanner.banner.delYn
+	                        QBanner.banner.delYn,
+	                        QFiles.files.filePath.as("imgUrl")
 	                )).from(QBanner.banner)
 	                .where(QBanner.banner.delYn.eq("Y"))
+//	                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBanner.banner.fileGroupId))
 	                .orderBy(QBanner.banner.level.asc())
 	                .fetch();
 			 
