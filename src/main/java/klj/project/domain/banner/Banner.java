@@ -39,18 +39,22 @@ public class Banner {
 
 	@Column(name = "del_yn")
 	private String delYn;
+	
+    @Column(name = "file_group_id")
+    private Long fileGroupId;
 
 	@Column(name = "created_at")
 	@CreatedDate
 	private LocalDateTime createdAt;
 
 	@Builder
-	public Banner(Long bannerId, String bannerName, int validDays, int level, String delYn, LocalDateTime createdAt) {
+	public Banner(Long bannerId, String bannerName, int validDays, int level, String delYn, LocalDateTime createdAt, Long fileGroupId) {
 		this.bannerId = bannerId;
 		this.bannerName = bannerName;
 		this.validDays = validDays;
 		this.level = level;
 		this.delYn = delYn;
+		this.fileGroupId = fileGroupId;
 		this.createdAt = createdAt;
 	}
 
@@ -59,7 +63,7 @@ public class Banner {
 		return this;
 	}
 	
-	public static Banner insertBanner(String bannerName, LocalDateTime createdAt, int validDays, int nextLevel) {
+	public static Banner insertBanner(String bannerName, LocalDateTime createdAt, int validDays, int nextLevel, Long fileGroupId) {
         return Banner.builder()
                 .bannerName(bannerName)
                 .createdAt(createdAt)
