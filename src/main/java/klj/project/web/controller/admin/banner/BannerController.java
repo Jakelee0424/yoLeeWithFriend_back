@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +19,8 @@ import klj.project.service.admin.baord.BoardMngrService;
 import klj.project.web.controller.admin.admin.AdminController;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
+import klj.project.web.dto.admin.banner.BannerLevelReqDto;
+import klj.project.web.dto.admin.banner.BannerReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.RequiredArgsConstructor;
@@ -73,12 +77,95 @@ public class BannerController {
     public KljResponse<List<BannerResDto>> deleteBannerById(@RequestParam("ids") List<Long> bannerIds) {
 
         try {
-            List<BannerResDto> bannerDeleteList = bannerService.deleteBannerById(bannerIds);
+            List<BannerResDto> bannerList = bannerService.deleteBannerById(bannerIds);
 
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(bannerDeleteList);
+                    .buildWith(bannerList);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+    
+    @PostMapping(path = "/bannerMngr/restore", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<List<BannerResDto>> restoreBannerById(@RequestBody List<Long> bannerIds) {
+
+        try {
+            List<BannerResDto> bannerList = bannerService.restoreBannerById(bannerIds);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(bannerList);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+    
+    @PostMapping(path = "/bannerMngr/level", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<List<BannerResDto>> bannerLevelChange(@RequestBody List<BannerLevelReqDto> bannerLevelReqDto) {
+
+        try {
+            List<BannerResDto> bannerResList = bannerService.bannerLevelChange(bannerLevelReqDto);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(bannerResList);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+    
+    @PostMapping(path = "/bannerMngr/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<List<BannerResDto>> insertBanner(@RequestBody BannerReqDto bannerReqDto) {
+
+        try {
+            List<BannerResDto> bannerList = bannerService.insertBanner(bannerReqDto);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(bannerList);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+    }
+    
+    @PostMapping(path = "/bannerMngr/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public KljResponse<List<BannerResDto>> updateBanner(@RequestBody BannerLevelReqDto bannerLevelReqDto) {
+
+        try {
+            List<BannerResDto> bannerList = bannerService.updateBanner(bannerLevelReqDto);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(bannerList);
 
         }catch (Exception e){
             log.info(e.toString());
