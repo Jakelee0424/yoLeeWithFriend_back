@@ -69,24 +69,27 @@ public class Banner {
                 .createdAt(createdAt)
                 .validDays(validDays)
                 .level(nextLevel)
+                .fileGroupId(fileGroupId)
                 .delYn("N")
                 .build();
 	}
 	
-	public void updateBanner(String bannerName, LocalDateTime createdAt, int validDays) {
+	public void updateBanner(String bannerName, LocalDateTime createdAt, int validDays, Long fileGroupId) {
 		this.bannerName = bannerName;
 		this.createdAt = createdAt;
 		this.validDays = validDays;
+		this.fileGroupId = fileGroupId;
 	}
 	
-	public BannerResDto toResponseDto() {
+	public BannerResDto toResponseDto(String imgUrl) {
 		return new BannerResDto(
         	this.bannerId,
 			this.bannerName,
 			this.createdAt,
 			this.validDays,
 			this.level,
-			this.delYn
+			this.delYn,
+			imgUrl
         );
 	}
 	
@@ -98,4 +101,7 @@ public class Banner {
 		this.delYn = "N";
 		return this;
 	}
+
+
+
 }

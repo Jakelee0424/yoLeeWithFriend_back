@@ -96,14 +96,27 @@ public class BannerService {
 	    return bannerQuerydslRepository.findAllBannerList();
 	}
 
-	public List<BannerResDto> updateBanner(BannerLevelReqDto bannerLevelReqDto) {
+	public List<BannerResDto> updateBanner(BannerLevelReqDto bannerLevelReqDto, MultipartFile multipartFile) throws Exception {
+		Long fileGroupId = null;
+		
 		Long bannerId = bannerLevelReqDto.getBannerId();
 		String bannerName = bannerLevelReqDto.getBannerName();
-		LocalDateTime createdAt = bannerLevelReqDto.getCreatedAt();
 		int validDays = bannerLevelReqDto.getValidDays();
+		LocalDateTime createdAt = bannerLevelReqDto.getCreatedAt();
+		
+        if(multipartFile !=null){
+            LocalDateTime localDateTime = LocalDateTime.now();
+            FileGroup fileGroup = FileGroup.createFileGroup(FileCategory.img, "배너이미지", localDateTime);
+            fileGroup = fileGroupRepository.save(fileGroup);
+            fileGroupId = fileGroup.getId();
+            MultipartFile[] multipartFiles = new MultipartFile[1];
+            multipartFiles[0] = multipartFile;
+            List<Files> filesInsertList = FileManageUtil.saveFiles(multipartFiles, fileGroup, FileType.jpg);
+            fileRepository.saveAll(filesInsertList);
+        }
 		
 		Banner banner = bannerRepository.findById(bannerId).orElseThrow(() -> new RuntimeException("배너를 찾을 수 없습니다: " + bannerId));
-		banner.updateBanner(bannerName, createdAt, validDays);
+		banner.updateBanner(bannerName, createdAt, validDays, fileGroupId);
 		
 		banner = bannerRepository.save(banner);
 		
@@ -123,6 +136,5 @@ public class BannerService {
 	
 		 return boardMngrList;
 	}
-
 
 }

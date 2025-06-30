@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import klj.project.domain.admin.admin.Admin;
 import klj.project.service.admin.admin.AdminService;
@@ -140,12 +142,14 @@ public class BannerController {
 
     }
     
-    @PostMapping(path = "/bannerMngr/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/bannerMngr/insert", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public KljResponse<List<BannerResDto>> insertBanner(@RequestParam("data") String data,
     													@RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         try {
         	ObjectMapper mapper = new ObjectMapper();
+        	mapper.registerModule(new JavaTimeModule());
+        	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         	BannerReqDto bannerReqDto = mapper.readValue(data, BannerReqDto.class);
         	
             List<BannerResDto> bannerList = bannerService.insertBanner(bannerReqDto, multipartFile);
@@ -165,10 +169,16 @@ public class BannerController {
     }
     
     @PostMapping(path = "/bannerMngr/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<List<BannerResDto>> updateBanner(@RequestBody BannerLevelReqDto bannerLevelReqDto) {
+    public KljResponse<List<BannerResDto>> updateBanner(@RequestParam("data") String data,
+    													@RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         try {
-            List<BannerResDto> bannerList = bannerService.updateBanner(bannerLevelReqDto);
+        	ObjectMapper mapper = new ObjectMapper();
+        	mapper.registerModule(new JavaTimeModule());
+        	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        	BannerLevelReqDto bannerLevelReqDto = mapper.readValue(data, BannerLevelReqDto.class);
+        	
+            List<BannerResDto> bannerList = bannerService.updateBanner(bannerLevelReqDto, multipartFile);
 
             return KljResponse
                     .create()

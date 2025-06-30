@@ -19,5 +19,6 @@ public class BannerResDto {
     private Integer validDays;
     private Integer level;
     private String delYn;
+    private String imgUrl;
     
 }
