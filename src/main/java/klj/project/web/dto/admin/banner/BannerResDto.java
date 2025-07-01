@@ -20,5 +20,6 @@ public class BannerResDto {
     private Integer level;
     private String delYn;
     private String imgUrl;
+    private Long fileGroupId;
     
 }

@@ -13,7 +13,7 @@ import klj.project.domain.board.QBoard;
 import klj.project.domain.file.QFiles;
 import klj.project.domain.user.user.QUser;
 import klj.project.domain.user.user.User;
-import klj.project.web.dto.admin.banner.BannerReqDto;
+import klj.project.web.dto.admin.banner.BannerCreateReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +34,7 @@ public class BannerQuerydslRepository {
                         QBanner.banner.level,
                         QBanner.banner.createdAt,
                         QBanner.banner.delYn,
+                        QBanner.banner.fileGroupId,
                         QFiles.files.filePath.as("imgUrl")
                 )).from(QBanner.banner)
                 .where(QBanner.banner.delYn.eq("N"))
@@ -53,6 +54,7 @@ public class BannerQuerydslRepository {
 	                        QBanner.banner.level,
 	                        QBanner.banner.createdAt,
 	                        QBanner.banner.delYn,
+	                        QBanner.banner.fileGroupId,
 	                        QFiles.files.filePath.as("imgUrl")
 	                )).from(QBanner.banner)
 	                .where(QBanner.banner.delYn.eq("Y"))

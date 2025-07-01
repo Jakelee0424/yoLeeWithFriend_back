@@ -25,8 +25,9 @@ import klj.project.web.controller.admin.admin.AdminController;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.banner.BannerLevelReqDto;
-import klj.project.web.dto.admin.banner.BannerReqDto;
+import klj.project.web.dto.admin.banner.BannerCreateReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
+import klj.project.web.dto.admin.banner.BannerUpdateReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.BoardSaveDto;
 import lombok.RequiredArgsConstructor;
@@ -150,9 +151,9 @@ public class BannerController {
         	ObjectMapper mapper = new ObjectMapper();
         	mapper.registerModule(new JavaTimeModule());
         	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        	BannerReqDto bannerReqDto = mapper.readValue(data, BannerReqDto.class);
+        	BannerCreateReqDto bannerCreateReqDto = mapper.readValue(data, BannerCreateReqDto.class);
         	
-            List<BannerResDto> bannerList = bannerService.insertBanner(bannerReqDto, multipartFile);
+            List<BannerResDto> bannerList = bannerService.insertBanner(bannerCreateReqDto, multipartFile);
 
             return KljResponse
                     .create()
@@ -176,9 +177,9 @@ public class BannerController {
         	ObjectMapper mapper = new ObjectMapper();
         	mapper.registerModule(new JavaTimeModule());
         	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        	BannerLevelReqDto bannerLevelReqDto = mapper.readValue(data, BannerLevelReqDto.class);
+        	BannerUpdateReqDto bannerUpdateReqDto = mapper.readValue(data, BannerUpdateReqDto.class);
         	
-            List<BannerResDto> bannerList = bannerService.updateBanner(bannerLevelReqDto, multipartFile);
+            List<BannerResDto> bannerList = bannerService.updateBanner(bannerUpdateReqDto, multipartFile);
 
             return KljResponse
                     .create()

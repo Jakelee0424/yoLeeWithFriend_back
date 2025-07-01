@@ -2,6 +2,8 @@ package klj.project.web.dto.admin.banner;
 
 import java.time.LocalDateTime;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +13,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BannerLevelReqDto {
-	
+public class BannerUpdateReqDto {
     private Long bannerId;
     private Integer level;
+    private String bannerName;
+    private LocalDateTime createdAt;
+    private Integer validDays;
+    private Long fileGroupId;
 }

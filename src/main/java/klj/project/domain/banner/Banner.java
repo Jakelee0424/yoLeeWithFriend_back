@@ -89,7 +89,8 @@ public class Banner {
 			this.validDays,
 			this.level,
 			this.delYn,
-			imgUrl
+			imgUrl,
+			this.fileGroupId
         );
 	}
 	

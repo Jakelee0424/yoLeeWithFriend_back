@@ -18,8 +18,9 @@ import klj.project.repository.file.FileGroupRepository;
 import klj.project.repository.file.FileRepository;
 import klj.project.util.FileManageUtil;
 import klj.project.web.dto.admin.banner.BannerLevelReqDto;
-import klj.project.web.dto.admin.banner.BannerReqDto;
+import klj.project.web.dto.admin.banner.BannerCreateReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
+import klj.project.web.dto.admin.banner.BannerUpdateReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,13 +60,13 @@ public class BannerService {
 		 
 	}
 
-	public List<BannerResDto> insertBanner(BannerReqDto bannerReqDto, MultipartFile multipartFile) throws Exception {
+	public List<BannerResDto> insertBanner(BannerCreateReqDto bannerCreateReqDto, MultipartFile multipartFile) throws Exception {
 		Long fileGroupId = null;
 		
 		int nextLevel = bannerQuerydslRepository.findMaxLevel() + 1;
-		String bannerName = bannerReqDto.getBannerName();
-		LocalDateTime createdAt = bannerReqDto.getCreatedAt();
-		int validDays = bannerReqDto.getValidDays();
+		String bannerName = bannerCreateReqDto.getBannerName();
+		LocalDateTime createdAt = bannerCreateReqDto.getCreatedAt();
+		int validDays = bannerCreateReqDto.getValidDays();
 		
         if(multipartFile !=null){
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -96,13 +97,13 @@ public class BannerService {
 	    return bannerQuerydslRepository.findAllBannerList();
 	}
 
-	public List<BannerResDto> updateBanner(BannerLevelReqDto bannerLevelReqDto, MultipartFile multipartFile) throws Exception {
+	public List<BannerResDto> updateBanner(BannerUpdateReqDto bannerUpdateReqDto, MultipartFile multipartFile) throws Exception {
 		Long fileGroupId = null;
 		
-		Long bannerId = bannerLevelReqDto.getBannerId();
-		String bannerName = bannerLevelReqDto.getBannerName();
-		int validDays = bannerLevelReqDto.getValidDays();
-		LocalDateTime createdAt = bannerLevelReqDto.getCreatedAt();
+		Long bannerId = bannerUpdateReqDto.getBannerId();
+		String bannerName = bannerUpdateReqDto.getBannerName();
+		int validDays = bannerUpdateReqDto.getValidDays();
+		LocalDateTime createdAt = bannerUpdateReqDto.getCreatedAt();
 		
         if(multipartFile !=null){
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -113,6 +114,8 @@ public class BannerService {
             multipartFiles[0] = multipartFile;
             List<Files> filesInsertList = FileManageUtil.saveFiles(multipartFiles, fileGroup, FileType.jpg);
             fileRepository.saveAll(filesInsertList);
+        }else {
+        	fileGroupId = bannerUpdateReqDto.getFileGroupId();
         }
 		
 		Banner banner = bannerRepository.findById(bannerId).orElseThrow(() -> new RuntimeException("배너를 찾을 수 없습니다: " + bannerId));
