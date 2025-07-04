@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BannerReqDto {
+public class BannerCreateReqDto {
 	
     private String bannerName;
     private LocalDateTime createdAt;

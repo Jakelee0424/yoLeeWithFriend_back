@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import klj.project.domain.admin.admin.Admin;
 import klj.project.service.admin.admin.AdminService;
@@ -23,8 +25,9 @@ import klj.project.web.controller.admin.admin.AdminController;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.banner.BannerLevelReqDto;
-import klj.project.web.dto.admin.banner.BannerReqDto;
+import klj.project.web.dto.admin.banner.BannerCreateReqDto;
 import klj.project.web.dto.admin.banner.BannerResDto;
+import klj.project.web.dto.admin.banner.BannerUpdateReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.BoardSaveDto;
 import lombok.RequiredArgsConstructor;
@@ -140,15 +143,17 @@ public class BannerController {
 
     }
     
-    @PostMapping(path = "/bannerMngr/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/bannerMngr/insert", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public KljResponse<List<BannerResDto>> insertBanner(@RequestParam("data") String data,
     													@RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         try {
         	ObjectMapper mapper = new ObjectMapper();
-        	BannerReqDto bannerReqDto = mapper.readValue(data, BannerReqDto.class);
+        	mapper.registerModule(new JavaTimeModule());
+        	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        	BannerCreateReqDto bannerCreateReqDto = mapper.readValue(data, BannerCreateReqDto.class);
         	
-            List<BannerResDto> bannerList = bannerService.insertBanner(bannerReqDto, multipartFile);
+            List<BannerResDto> bannerList = bannerService.insertBanner(bannerCreateReqDto, multipartFile);
 
             return KljResponse
                     .create()
@@ -165,10 +170,16 @@ public class BannerController {
     }
     
     @PostMapping(path = "/bannerMngr/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<List<BannerResDto>> updateBanner(@RequestBody BannerLevelReqDto bannerLevelReqDto) {
+    public KljResponse<List<BannerResDto>> updateBanner(@RequestParam("data") String data,
+    													@RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         try {
-            List<BannerResDto> bannerList = bannerService.updateBanner(bannerLevelReqDto);
+        	ObjectMapper mapper = new ObjectMapper();
+        	mapper.registerModule(new JavaTimeModule());
+        	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        	BannerUpdateReqDto bannerUpdateReqDto = mapper.readValue(data, BannerUpdateReqDto.class);
+        	
+            List<BannerResDto> bannerList = bannerService.updateBanner(bannerUpdateReqDto, multipartFile);
 
             return KljResponse
                     .create()
