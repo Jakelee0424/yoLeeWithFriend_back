@@ -19,6 +19,7 @@ import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.NuinfoReqDto;
 import klj.project.web.dto.admin.board.NuinfoResDto;
+import klj.project.web.dto.admin.common.PageReqDto;
 import klj.project.web.dto.admin.util.LogsResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,8 @@ public class LogsService {
     private final LogsRepository logsRepository;
     private final LogsQuerydslRepository logsQuerydslRepository;
 
-    public List<LogsResDto> findLogsList(){
-        List<LogsResDto> allLogsList = logsQuerydslRepository.findAllLogsList();
+    public List<LogsResDto> findLogsList(PageReqDto pageReqDto){
+        List<LogsResDto> allLogsList = logsQuerydslRepository.findAllLogsList(pageReqDto);
         return allLogsList;
     }
 

@@ -1,6 +1,7 @@
 package klj.project.web.dto.admin.util;
 
 import klj.project.domain.util.LogsType;
+import klj.project.web.dto.admin.common.PageDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
