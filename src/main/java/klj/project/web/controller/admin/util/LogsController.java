@@ -6,11 +6,14 @@ import klj.project.domain.util.IpBlock;
 import klj.project.domain.util.Logs;
 import klj.project.domain.util.LogsType;
 import klj.project.repository.util.IpBlockRepository;
+import klj.project.repository.util.LogsQuerydslRepository;
 import klj.project.repository.util.LogsRepository;
 import klj.project.service.admin.util.LogsService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.admin.common.PageDto;
+import klj.project.web.dto.admin.common.PageReqDto;
 import klj.project.web.dto.admin.util.IpBlockResDto;
 import klj.project.web.dto.admin.util.IpBlockSaveDto;
 import klj.project.web.dto.admin.util.LogsResDto;
@@ -32,6 +35,8 @@ public class LogsController {
     // log 레포
     private final LogsRepository logsRepository;
 
+    private final LogsQuerydslRepository logsQuerydslRepository;
+
     // ipBlock 레포
     private final IpBlockRepository ipBlockRepository;
 
@@ -39,15 +44,16 @@ public class LogsController {
     private final LogsService logsService;
 
     @GetMapping("/logs/all")
-    public KljResponse<List<LogsResDto>> findLogsList() {
+    public KljResponse<PageDto> findLogsList(@ModelAttribute PageReqDto pageReqDto) {
 
         try {
-            List<LogsResDto> logsList = logsService.findLogsList();
-
+            List<LogsResDto> logsList = logsService.findLogsList(pageReqDto);
+            Long allLogsCount = logsQuerydslRepository.findAllLogsCount();
+            PageDto<LogsResDto> logsResDtoPageDto = new PageDto<>(logsList, allLogsCount);
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(logsList);
+                    .buildWith(logsResDtoPageDto);
 
         }catch (Exception e){
             log.info(e.toString());
