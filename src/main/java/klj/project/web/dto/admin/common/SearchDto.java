@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageDto<T>  extends SearchDto{
+public class SearchDto {
 
-    private List<T> content;  // 실제 데이터 리스트
-    private Long totalCount;
+    private String searchField;  // 실제 데이터 리스트
+    private String searchText;
 }

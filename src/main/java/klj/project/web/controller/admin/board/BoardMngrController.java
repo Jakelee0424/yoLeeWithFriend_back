@@ -10,6 +10,8 @@ import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.admin.AdminSaveDto;
 import klj.project.web.dto.admin.board.*;
+import klj.project.web.dto.admin.common.PageDto;
+import klj.project.web.dto.admin.common.PageReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,11 +33,11 @@ public class BoardMngrController {
     private final NuinfoService nuinfoService;
 
     @GetMapping("/boardMngr/all")
-    public KljResponse<List<BoardMngrResDto>> findBoardMngrList() {
+    public KljResponse<List<BoardMngrResDto>> findBoardMngrList(@ModelAttribute PageDto pageDto) {
 
         try {
 
-            List<BoardMngrResDto> boardMngrList = boardMngrService.findBoardMngrList();
+            List<BoardMngrResDto> boardMngrList = boardMngrService.findBoardMngrList(pageDto);
 
             return KljResponse
                     .create()
