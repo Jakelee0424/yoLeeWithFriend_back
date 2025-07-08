@@ -20,6 +20,8 @@ import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.NuinfoReqDto;
 import klj.project.web.dto.admin.board.NuinfoResDto;
+import klj.project.web.dto.admin.common.PageDto;
+import klj.project.web.dto.admin.common.PageReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,8 +45,8 @@ public class BoardMngrService {
     private final FileGroupRepository fileGroupRepository;
     private final FileQuerydslRepository fileQuerydslRepository;
 
-    public List<BoardMngrResDto> findBoardMngrList(){
-        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList();
+    public List<BoardMngrResDto> findBoardMngrList(PageDto pageDto){
+        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList(pageDto);
         return boardMngrList;
     }
 
