@@ -30,7 +30,7 @@ public class AdminService {
         Admin admin = adminRepository.findById(adminSn).orElseThrow(() -> new Exception("Admin not found with id: " + adminSn));
         return admin;
     }
-
+    
     public Admin saveAdmin(AdminSaveDto adminSaveDto) throws UnsupportedOperationException, NullPointerException {
         if(adminSaveDto.getId() == 0){
             String adminId = adminSaveDto.getAdminId();

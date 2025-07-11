@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.ErrorResponseException;
+import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 import java.util.List;
 
@@ -80,7 +83,15 @@ public class AdminController {
                     .create()
                     .succeed()
                     .buildWith(admin);
-
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+        }catch (NullPointerException e) {
+            log.info(e.toString());
+            return KljResponse
+                    .create()
         }catch (NullPointerException e) {
             log.info(e.toString());
             return KljResponse

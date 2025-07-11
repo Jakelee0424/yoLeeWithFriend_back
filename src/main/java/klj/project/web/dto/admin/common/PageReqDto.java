@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageReqDto {
+public class PageReqDto extends SearchDto{
 
     private Long itemsPerPage;
     private Long pageBlockSize;

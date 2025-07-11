@@ -48,7 +48,7 @@ public class LogsController {
 
         try {
             List<LogsResDto> logsList = logsService.findLogsList(pageReqDto);
-            Long allLogsCount = logsQuerydslRepository.findAllLogsCount();
+            Long allLogsCount = logsQuerydslRepository.findAllLogsCount(pageReqDto);
             PageDto<LogsResDto> logsResDtoPageDto = new PageDto<>(logsList, allLogsCount);
             return KljResponse
                     .create()

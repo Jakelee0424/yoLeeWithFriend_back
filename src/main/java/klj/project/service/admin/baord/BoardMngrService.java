@@ -1,5 +1,16 @@
 package klj.project.service.admin.baord;
 
+
+import klj.project.domain.admin.Admin;
+import klj.project.repository.admin.AdminRepository;
+import klj.project.repository.board.BoardQuerydslRepository;
+import klj.project.repository.board.BoardRepository;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 import klj.project.domain.admin.admin.Admin;
 import klj.project.domain.admin.admin.AdminAuthority;
 import klj.project.domain.board.Board;
@@ -40,13 +51,20 @@ import java.util.Optional;
 public class BoardMngrService {
     private final BoardRepository boardRepository;
     private final BoardQuerydslRepository boardQuerydslRepository;
+
+    public List<BoardMngrResDto> findBoardMngrList(){
+        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList();
+        return boardMngrList;
+    }
+
+
     private final NuinfoRepository nuinfoRepository;
     private final FileRepository fileRepository;
     private final FileGroupRepository fileGroupRepository;
     private final FileQuerydslRepository fileQuerydslRepository;
 
-    public List<BoardMngrResDto> findBoardMngrList(PageDto pageDto){
-        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList(pageDto);
+    public List<BoardMngrResDto> findBoardMngrList(PageReqDto pageReqDto){
+        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList(pageReqDto);
         return boardMngrList;
     }
 
