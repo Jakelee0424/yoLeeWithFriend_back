@@ -1,6 +1,8 @@
 package klj.project.domain.code;
 
 import jakarta.persistence.*;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.admin.code.CodeDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,5 +45,13 @@ public class Code implements Persistable<String> {
     @Override
     public boolean isNew() {
         return createdDate == null; // (5)
+    }
+
+
+    public CodeDto toResponseDto() {
+        return new CodeDto(
+                this.id,
+                this.name
+        );
     }
 }

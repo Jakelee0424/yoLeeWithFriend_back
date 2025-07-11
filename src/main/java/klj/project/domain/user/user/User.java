@@ -1,6 +1,8 @@
 package klj.project.domain.user.user;
 
 import jakarta.persistence.*;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.user.user.UserInfoResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,6 +58,18 @@ public class User {
     public User changeUserStatus (UserStatus status){
         this.status = status;
         return this;
+    }
+
+    public UserInfoResponseDto toResponseDto() {
+        return new UserInfoResponseDto(
+                this.id,
+                this.nickName,
+                "",
+                this.oauthId,
+                this.oauthType,
+                this.authority,
+                this.status
+        );
     }
 
 

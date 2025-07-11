@@ -1,6 +1,8 @@
 package klj.project.domain.board;
 
 import jakarta.persistence.*;
+import klj.project.domain.admin.admin.Admin;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +26,23 @@ public class Board {
 
     @Column(name = "brand_code_id")
     private String boardCodeId;
+    private String brandCodeId;
+
+    @Column(name = "file_group_id")
+    private Long fileGroupId;
+
+    @Column(name = "nuinfo_id")
+    private String nuinfoId;
 
     @Column(name = "use_yn")
     private String useYn;
-
     @CreatedDate
     private LocalDateTime createdDate;
+    @Column(name = "del_yn")
+    private String delYn;
+
+    @CreatedDate
+    private LocalDateTime createDate;
 
     @LastModifiedDate
     private LocalDateTime modifyDate;
@@ -54,8 +67,54 @@ public class Board {
                 .build();
     }
 
+    public Board(String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId) {
+        this.boardName = boardName;
+        this.brandCodeId = brandCodeId;
+        this.useYn = useYn;
+        this.boardCategoryCodeId = boardCategoryCodeId;
+        this.fileGroupId = fileGroupId;
+        this.nuinfoId = nuinfoId;
+        this.delYn = "N";
+    }
 
+    public static Board createBoard (String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId){
+        return Board.builder()
+                .boardName(boardName)
+                .brandCodeId(brandCodeId)
+                .useYn(useYn)
+                .boardCategoryCodeId(boardCategoryCodeId)
+                .fileGroupId(fileGroupId)
+                .nuinfoId(nuinfoId)
+                .build();
+    }
 
+    public BoardMngrResDto toResponseDto() {
+        return new BoardMngrResDto(
+                this.boardId,
+                this.boardName,
+                this.brandCodeId,
+                this.useYn,
+                this.delYn,
+                this.createDate, // responseDto의 createdDate와 매핑됩니다.
+                this.modifyDate,
+                this.boardCategoryCodeId,
+                this.nuinfoId,
+                ""
+        );
+    }
+
+    public Board deleteBoard (){
+        this.delYn = "Y";
+        return this;
+    }
+
+    public Board changeBoardInfo (String boardName, String brandCodeId, String useYn, Long fileGroupId){
+        this.boardName = boardName;
+        this.brandCodeId = brandCodeId;
+        this.useYn = useYn;
+        this.fileGroupId = fileGroupId;
+        return this;
+    }
 
 
 }
