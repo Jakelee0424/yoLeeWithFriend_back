@@ -3,7 +3,10 @@ package klj.project.service.user.user;
 
 import klj.project.domain.user.user.User;
 import klj.project.domain.user.user.UserStatus;
+import klj.project.repository.user.user.UserQuerydslRepository;
 import klj.project.repository.user.user.UserRepository;
+import klj.project.web.dto.admin.common.PageReqDto;
+import klj.project.web.dto.user.user.UserInfoResponseDto;
 import klj.project.web.dto.user.user.UserStatusDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +20,12 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserQuerydslRepository userQuerydslRepository;
 
-    public List<User> findUserList(){
-        List<User> userList = userRepository.findAll();
-        return userList;
+    public List<UserInfoResponseDto> findUserList(PageReqDto pageReqDto){
+        //List<User> userList = userRepository.findAll();
+        List<UserInfoResponseDto> allUserList = userQuerydslRepository.findAllUserList(pageReqDto);
+        return allUserList;
     }
 
     public void deleteUser(Long adminSn) throws Exception {

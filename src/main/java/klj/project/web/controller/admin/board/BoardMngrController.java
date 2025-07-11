@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import klj.project.domain.admin.admin.Admin;
+import klj.project.repository.board.BoardQuerydslRepository;
 import klj.project.service.admin.baord.BoardMngrService;
 import klj.project.service.admin.baord.NuinfoService;
 import klj.project.web.dto.Error;
@@ -12,6 +13,7 @@ import klj.project.web.dto.admin.admin.AdminSaveDto;
 import klj.project.web.dto.admin.board.*;
 import klj.project.web.dto.admin.common.PageDto;
 import klj.project.web.dto.admin.common.PageReqDto;
+import klj.project.web.dto.admin.util.LogsResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,17 +34,21 @@ public class BoardMngrController {
     // 영양정보 서비스
     private final NuinfoService nuinfoService;
 
+    // 게시물 관리 레포
+    private final BoardQuerydslRepository boardQuerydslRepository;
+
     @GetMapping("/boardMngr/all")
-    public KljResponse<List<BoardMngrResDto>> findBoardMngrList(@ModelAttribute PageDto pageDto) {
+    public KljResponse<PageDto> findBoardMngrList(@ModelAttribute PageReqDto pageReqDto) {
 
         try {
 
-            List<BoardMngrResDto> boardMngrList = boardMngrService.findBoardMngrList(pageDto);
-
+            List<BoardMngrResDto> boardMngrList = boardMngrService.findBoardMngrList(pageReqDto);
+            Long allBoardMngrListCount = boardQuerydslRepository.findAllBoardMngrListCount(pageReqDto);
+            PageDto<BoardMngrResDto> boardResDtoPageDto = new PageDto<>(boardMngrList, allBoardMngrListCount);
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(boardMngrList);
+                    .buildWith(boardResDtoPageDto);
 
         }catch (Exception e){
             log.info(e.toString());

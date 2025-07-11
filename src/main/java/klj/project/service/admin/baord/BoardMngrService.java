@@ -45,8 +45,8 @@ public class BoardMngrService {
     private final FileGroupRepository fileGroupRepository;
     private final FileQuerydslRepository fileQuerydslRepository;
 
-    public List<BoardMngrResDto> findBoardMngrList(PageDto pageDto){
-        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList(pageDto);
+    public List<BoardMngrResDto> findBoardMngrList(PageReqDto pageReqDto){
+        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList(pageReqDto);
         return boardMngrList;
     }
 
