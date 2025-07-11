@@ -41,17 +41,21 @@ public class AdminService {
         Admin admin = adminRepository.findById(adminSn).orElseThrow(() -> new Exception("Admin not found with id: " + adminSn));
         return admin;
     }
-
-    public Admin saveAdmin(AdminSaveDto adminSaveDto) throws Exception {
+    
+    public Admin saveAdmin(AdminSaveDto adminSaveDto) throws UnsupportedOperationException, NullPointerException {
         if(adminSaveDto.getId() == 0){
             String adminId = adminSaveDto.getAdminId();
             String adminName = adminSaveDto.getName();
             String adminPwd = adminSaveDto.getPassWord();
+            Optional<Admin> findByIdAdmin = adminRepository.findById(adminId);
+            if(findByIdAdmin.isPresent()){
+                throw new UnsupportedOperationException("Admin Id if already use");
+            }
             Admin admin = Admin.createAdmin(AdminAuthority.master, adminId, adminName, adminPwd);
             admin = adminRepository.save(admin);
             return admin;
         }else{
-            Admin admin = adminRepository.findById(adminSaveDto.getId()).orElseThrow(() -> new Exception("Admin not found with id: " + adminSaveDto.getId()));
+            Admin admin = adminRepository.findById(adminSaveDto.getId()).orElseThrow(() -> new NullPointerException("Admin not found with id: " + adminSaveDto.getId()));
             String adminId = adminSaveDto.getAdminId();
             String adminName = adminSaveDto.getName();
             String adminPwd = adminSaveDto.getPassWord();

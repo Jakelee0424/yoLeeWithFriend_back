@@ -4,6 +4,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import klj.project.domain.user.user.OauthType;
 import klj.project.domain.user.user.QUser;
+import klj.project.domain.user.QUser;
+import klj.project.domain.user.user.OauthType;
 import klj.project.domain.user.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
