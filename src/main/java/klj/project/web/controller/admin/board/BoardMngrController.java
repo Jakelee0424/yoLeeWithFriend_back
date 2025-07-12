@@ -1,32 +1,17 @@
 package klj.project.web.controller.admin.board;
 
 
-import klj.project.domain.admin.Admin;
-import klj.project.service.admin.admin.AdminService;
-import klj.project.service.admin.baord.BoardMngrService;
-import klj.project.web.dto.Error;
-import klj.project.web.dto.KljResponse;
-import klj.project.web.dto.admin.board.BoardMngrResDto;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import klj.project.domain.admin.admin.Admin;
 import klj.project.repository.board.BoardQuerydslRepository;
 import klj.project.service.admin.baord.BoardMngrService;
 import klj.project.service.admin.baord.NuinfoService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
-import klj.project.web.dto.admin.admin.AdminSaveDto;
 import klj.project.web.dto.admin.board.*;
 import klj.project.web.dto.admin.common.PageDto;
 import klj.project.web.dto.admin.common.PageReqDto;
-import klj.project.web.dto.admin.util.LogsResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
