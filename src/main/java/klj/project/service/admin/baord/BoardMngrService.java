@@ -1,18 +1,6 @@
 package klj.project.service.admin.baord;
 
 
-import klj.project.domain.admin.Admin;
-import klj.project.repository.admin.AdminRepository;
-import klj.project.repository.board.BoardQuerydslRepository;
-import klj.project.repository.board.BoardRepository;
-import klj.project.web.dto.admin.board.BoardMngrResDto;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import klj.project.domain.admin.admin.Admin;
-import klj.project.domain.admin.admin.AdminAuthority;
 import klj.project.domain.board.Board;
 import klj.project.domain.board.Nuinfo;
 import klj.project.domain.file.FileCategory;
@@ -26,21 +14,17 @@ import klj.project.repository.file.FileGroupRepository;
 import klj.project.repository.file.FileQuerydslRepository;
 import klj.project.repository.file.FileRepository;
 import klj.project.util.FileManageUtil;
-import klj.project.web.dto.admin.admin.AdminSaveDto;
 import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.NuinfoReqDto;
 import klj.project.web.dto.admin.board.NuinfoResDto;
-import klj.project.web.dto.admin.common.PageDto;
 import klj.project.web.dto.admin.common.PageReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,13 +35,6 @@ import java.util.Optional;
 public class BoardMngrService {
     private final BoardRepository boardRepository;
     private final BoardQuerydslRepository boardQuerydslRepository;
-
-    public List<BoardMngrResDto> findBoardMngrList(){
-        List<BoardMngrResDto> boardMngrList = boardQuerydslRepository.findAllBoardMngrList();
-        return boardMngrList;
-    }
-
-
     private final NuinfoRepository nuinfoRepository;
     private final FileRepository fileRepository;
     private final FileGroupRepository fileGroupRepository;

@@ -1,7 +1,6 @@
 package klj.project.repository.board;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import klj.project.domain.admin.Admin;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
