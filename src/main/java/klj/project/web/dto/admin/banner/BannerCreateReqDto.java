@@ -19,5 +19,7 @@ public class BannerCreateReqDto {
     private LocalDateTime createdAt;
     private Integer validDays;
     private MultipartFile multipartFile;
+    private Long fileGroupId;
+    private Integer level;
     
 }
