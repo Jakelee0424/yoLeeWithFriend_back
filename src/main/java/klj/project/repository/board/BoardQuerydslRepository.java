@@ -125,4 +125,67 @@ public class BoardQuerydslRepository {
         return logsListCount;
     }
 
+    public List<BoardMngrResDto> findAllBoardMainList (){
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+
+
+
+        List<BoardMngrResDto> boardMngrList = queryFactory
+                .select(Projections.fields(BoardMngrResDto.class,
+                        QBoard.board.boardId,
+                        QBoard.board.brandCodeId,
+                        QBoard.board.boardName,
+                        QBoard.board.boardCategoryCodeId,
+                        QBoard.board.useYn,
+                        QBoard.board.createDate,
+                        QBoard.board.modifyDate,
+                        QBoard.board.nuinfoId,
+                        QFiles.files.filePath.as("imgUrl"),
+                        QBoard.board.readCnt
+                )).from(QBoard.board)
+                .where(
+                        builder
+                )
+                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .limit(5)
+                .orderBy(QBoard.board.readCnt.desc() , QBoard.board.boardId.desc())
+                .fetch();
+
+        return boardMngrList;
+    }
+
+    public List<BoardMngrResDto> findAllBoardMain2List (){
+
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+
+
+
+        List<BoardMngrResDto> boardMngrList = queryFactory
+                .select(Projections.fields(BoardMngrResDto.class,
+                        QBoard.board.boardId,
+                        QBoard.board.brandCodeId,
+                        QBoard.board.boardName,
+                        QBoard.board.boardCategoryCodeId,
+                        QBoard.board.useYn,
+                        QBoard.board.createDate,
+                        QBoard.board.modifyDate,
+                        QBoard.board.nuinfoId,
+                        QFiles.files.filePath.as("imgUrl")
+                )).from(QBoard.board)
+                .where(
+                        builder
+                )
+                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .limit(5)
+                .orderBy(QBoard.board.boardId.desc())
+                .fetch();
+
+        return boardMngrList;
+    }
+
 }
