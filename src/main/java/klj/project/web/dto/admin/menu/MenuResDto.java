@@ -1,6 +1,5 @@
 package klj.project.web.dto.admin.menu;
 
-import klj.project.domain.menu.Menu;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ public class MenuResDto {
     private Long upperMenuNo;
     private String menuNm;
     private String url;
+    private String componentFileNm;
     private Integer ord;
     private String useYn;
 

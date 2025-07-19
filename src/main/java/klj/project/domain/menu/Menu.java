@@ -26,6 +26,9 @@ public class Menu {
 	@Column(name = "url", length = 255)
 	private String url;
 
+	@Column(name = "component_file_nm")
+	private String componentFileNm;
+
 	@Column(name = "ord", nullable = false)
 	private Integer ord;
 
@@ -33,11 +36,12 @@ public class Menu {
 	private String useYn;
 
 	@Builder
-	public Menu(Long menuNo, Long upperMenuNo, String menuNm, String url, Integer ord, String useYn) {
+	public Menu(Long menuNo, Long upperMenuNo, String menuNm, String url, String componentFileNm, Integer ord, String useYn) {
 		this.menuNo = menuNo;
 		this.upperMenuNo = upperMenuNo;
 		this.menuNm = menuNm;
 		this.url = url;
+		this.componentFileNm = componentFileNm;
 		this.ord = ord;
 		this.useYn = useYn;
 	}
@@ -49,6 +53,7 @@ public class Menu {
 				.upperMenuNo(this.upperMenuNo)
 				.menuNm(this.menuNm)
 				.url(this.url)
+				.componentFileNm(this.componentFileNm)
 				.ord(this.ord)
 				.useYn(this.useYn)
 				.children(new ArrayList<>())
