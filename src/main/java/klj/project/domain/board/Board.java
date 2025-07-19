@@ -48,8 +48,11 @@ public class Board {
     @Column(name = "board_category_code_id")
     private String boardCategoryCodeId;
 
+    @Column(name = "read_cnt")
+    private Long readCnt;
+
     @Builder
-    public Board(String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId) {
+    public Board(String boardName, String brandCodeId, String useYn, String boardCategoryCodeId, Long fileGroupId, String nuinfoId, Long readCnt) {
         this.boardName = boardName;
         this.brandCodeId = brandCodeId;
         this.useYn = useYn;
@@ -67,6 +70,7 @@ public class Board {
                 .boardCategoryCodeId(boardCategoryCodeId)
                 .fileGroupId(fileGroupId)
                 .nuinfoId(nuinfoId)
+                .readCnt(0L)
                 .build();
     }
 
@@ -81,7 +85,8 @@ public class Board {
                 this.modifyDate,
                 this.boardCategoryCodeId,
                 this.nuinfoId,
-                ""
+                "",
+                this.readCnt
         );
     }
 
