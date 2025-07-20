@@ -22,9 +22,9 @@ public class MenuController {
     private final MenuService menuService;
 
     @GetMapping(path = "/getMenuList/{menuNo}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public KljResponse<List<MenuResDto>> getMenuList(@PathVariable Long menuNo) {
+    public KljResponse<List<MenuResDto>> getMenuList(@PathVariable("menuNo") String menuNo) {
         try {
-            List<MenuResDto> adminMenuList = menuService.getMenuList(menuNo);
+            List<MenuResDto> adminMenuList = menuService.getMenuList(Long.parseLong(menuNo));
             return KljResponse
                     .create()
                     .succeed()
