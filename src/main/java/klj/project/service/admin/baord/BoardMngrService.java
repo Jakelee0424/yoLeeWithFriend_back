@@ -74,7 +74,18 @@ public class BoardMngrService {
     }
 
     public BoardMngrResDto saveBoard(BoardMngrReqDto boardMngrReqDto, MultipartFile multipartFile) throws Exception {
+        String fileGroupIdStr = boardMngrReqDto.getFileGroupId();
         Long fileGroupId = null;
+
+        if (fileGroupIdStr != null && !fileGroupIdStr.isBlank()) {
+            try {
+                fileGroupId = Long.parseLong(fileGroupIdStr);
+            } catch (NumberFormatException e) {
+                log.warn("fileGroupId 변환 실패: {}", fileGroupIdStr, e);
+                // 필요하면 예외 처리 로직 추가
+            }
+        }
+
         if(boardMngrReqDto.getBoardId() == 0){
             String boardName = boardMngrReqDto.getBoardName();
             String brandCodeId = boardMngrReqDto.getBrandCodeId();
