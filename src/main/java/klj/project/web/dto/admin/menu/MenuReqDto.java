@@ -14,6 +14,7 @@ public class MenuReqDto {
     private Long upperMenuNo;   // 프론트에서 보낸 상위 ID (임시 or 실제)
     private String menuNm;
     private String url;
+    private String componentFileNm;
     private Integer ord;
     private String useYn;
 }

@@ -39,7 +39,9 @@ public class MenuMngService {
         // 1. 삭제
         if (menuSaveDto.getDeleteIdList() != null) {
             for (Long id : menuSaveDto.getDeleteIdList()) {
-                menuRepository.deleteById(id);
+                if (menuRepository.existsById(id)) {
+                    menuRepository.deleteById(id);
+                }
             }
         }
 
@@ -58,6 +60,7 @@ public class MenuMngService {
                         .menuNm(dto.getMenuNm())
                         .upperMenuNo(upperMenuNo)
                         .url(dto.getUrl())
+                        .componentFileNm(dto.getComponentFileNm())
                         .ord(dto.getOrd())
                         .useYn(dto.getUseYn())
                         .build()
@@ -76,6 +79,7 @@ public class MenuMngService {
                 menu.setMenuNm(dto.getMenuNm());
                 menu.setUpperMenuNo(dto.getUpperMenuNo());
                 menu.setUrl(dto.getUrl());
+                menu.setComponentFileNm(dto.getComponentFileNm());
                 menu.setOrd(dto.getOrd());
                 menu.setUseYn(dto.getUseYn());
             }

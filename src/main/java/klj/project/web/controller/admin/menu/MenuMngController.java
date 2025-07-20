@@ -35,7 +35,7 @@ public class MenuMngController {
             log.info(e.toString());
             return KljResponse
                     .create()
-                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "에러"))
                     .buildWith(null);
         }
     }
