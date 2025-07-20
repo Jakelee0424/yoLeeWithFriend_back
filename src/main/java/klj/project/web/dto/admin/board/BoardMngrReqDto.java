@@ -21,5 +21,6 @@ public class BoardMngrReqDto {
     private LocalDateTime modifyDate;
     private String boardCategoryCodeId;
     private String nuinfoId;
+    private String fileGroupId;
 
 }
