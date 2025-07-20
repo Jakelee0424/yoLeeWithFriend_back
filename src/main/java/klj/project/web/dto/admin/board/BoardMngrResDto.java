@@ -25,5 +25,6 @@ public class BoardMngrResDto {
     private String nuinfoId;
     private String imgUrl;
     private Long readCnt;
+    private String fileGroupId;
 
 }
