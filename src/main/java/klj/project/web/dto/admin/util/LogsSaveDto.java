@@ -21,4 +21,6 @@ public class LogsSaveDto {
     private String ipAddress;
     private LocalDateTime createdDate;
     private String url;
+    private String device;
+    private String browser;
 }
