@@ -5,9 +5,11 @@ import jakarta.persistence.EntityNotFoundException;
 import klj.project.domain.util.IpBlock;
 import klj.project.domain.util.Logs;
 import klj.project.domain.util.LogsType;
+import klj.project.domain.util.LogsUser;
 import klj.project.repository.util.IpBlockRepository;
 import klj.project.repository.util.LogsQuerydslRepository;
 import klj.project.repository.util.LogsRepository;
+import klj.project.repository.util.LogsUserRepository;
 import klj.project.service.admin.util.LogsService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
@@ -34,6 +36,8 @@ public class LogsController {
 
     // log 레포
     private final LogsRepository logsRepository;
+
+    private final LogsUserRepository logsUserRepository;
 
     private final LogsQuerydslRepository logsQuerydslRepository;
 
@@ -67,18 +71,22 @@ public class LogsController {
 
 
     @PostMapping(path = "/logs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<Logs> saveLogs(@RequestBody LogsSaveDto logsSaveDto) {
+    public KljResponse<LogsUser> saveLogs(@RequestBody LogsSaveDto logsSaveDto) {
 
         try {
             LocalDateTime localDateTime = LocalDateTime.now();
-            Logs logs = new Logs(0L,
+            LogsUser logsUser = new LogsUser(
+                    0L,
                     LogsType.GET,
-                    "queryString",
-                    "localAddr",
+                    "",
+                    logsSaveDto.getIpAddress(),
                     localDateTime,
-                    "requestURI"
+                    logsSaveDto.getUrl(),
+                    logsSaveDto.getDevice(),
+                    logsSaveDto.getBrowser()
             );
-            Logs saveLogs = logsRepository.save(logs);
+            LogsUser saveLogs = logsUserRepository.save(logsUser);
+
 
             return KljResponse
                     .create()
