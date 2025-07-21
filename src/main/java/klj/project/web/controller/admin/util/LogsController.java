@@ -78,7 +78,7 @@ public class LogsController {
             LogsUser logsUser = new LogsUser(
                     0L,
                     LogsType.GET,
-                    "",
+                    logsSaveDto.getDescription(),
                     logsSaveDto.getIpAddress(),
                     localDateTime,
                     logsSaveDto.getUrl(),
