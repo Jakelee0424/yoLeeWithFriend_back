@@ -57,6 +57,12 @@ public class BannerQuerydslRepository {
 
 	public List<BannerResDto> findExpiredBannerList() {
 		LocalDateTime now = LocalDateTime.now();
+		BooleanExpression expiredBannerCondition =
+			    QBanner.banner.delYn.eq("N") // 삭제되지 않은 배너
+			    .and(Expressions.dateTemplate(LocalDateTime.class,
+			            "TIMESTAMPADD(DAY, {1}, {0})",
+			            QBanner.banner.createdAt, QBanner.banner.validDays)
+			        .lt(now));
 		
 		List<BannerResDto> bannerList =  queryFactory
 	                .select(Projections.fields(BannerResDto.class,
@@ -69,12 +75,7 @@ public class BannerQuerydslRepository {
 	                        QBanner.banner.fileGroupId,
 	                        QFiles.files.filePath.as("imgUrl")
 	                )).from(QBanner.banner)
-	                .where(QBanner.banner.delYn.eq("Y")
-	                		.or(Expressions.dateTemplate(LocalDateTime.class,
-	                			    "TIMESTAMPADD(DAY, {1}, {0})",
-	                			    QBanner.banner.createdAt, QBanner.banner.validDays)
-	                			    .lt(now))
-	     			        )
+	                .where(expiredBannerCondition)
 	                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBanner.banner.fileGroupId))
 	                .orderBy(QBanner.banner.level.asc())
 	                .fetch();
