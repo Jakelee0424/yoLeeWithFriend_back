@@ -6,10 +6,7 @@ import klj.project.domain.util.IpBlock;
 import klj.project.domain.util.Logs;
 import klj.project.domain.util.LogsType;
 import klj.project.domain.util.LogsUser;
-import klj.project.repository.util.IpBlockRepository;
-import klj.project.repository.util.LogsQuerydslRepository;
-import klj.project.repository.util.LogsRepository;
-import klj.project.repository.util.LogsUserRepository;
+import klj.project.repository.util.*;
 import klj.project.service.admin.util.LogsService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
@@ -41,6 +38,8 @@ public class LogsController {
 
     private final LogsQuerydslRepository logsQuerydslRepository;
 
+    private final LogsUserQuerydslRepository logsUserQuerydslRepository;
+
     // ipBlock 레포
     private final IpBlockRepository ipBlockRepository;
 
@@ -71,7 +70,7 @@ public class LogsController {
 
 
     @PostMapping(path = "/logs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KljResponse<LogsUser> saveLogs(@RequestBody LogsSaveDto logsSaveDto) {
+    public KljResponse<LogsUser> saveUserLogs(@RequestBody LogsSaveDto logsSaveDto) {
 
         try {
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -215,6 +214,27 @@ public class LogsController {
 
     }
 
+    @GetMapping("/logs/user/all")
+    public KljResponse<PageDto> findUserLogsList(@ModelAttribute PageReqDto pageReqDto) {
+
+        try {
+            List<LogsResDto> logsList = logsService.findUserLogsList(pageReqDto);
+            Long allLogsCount = logsUserQuerydslRepository.findAllUserLogsCount(pageReqDto);
+            PageDto<LogsResDto> logsResDtoPageDto = new PageDto<>(logsList, allLogsCount);
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(logsResDtoPageDto);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
 
 
 

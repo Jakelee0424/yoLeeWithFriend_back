@@ -14,6 +14,8 @@ import klj.project.repository.file.FileQuerydslRepository;
 import klj.project.repository.file.FileRepository;
 import klj.project.repository.util.LogsQuerydslRepository;
 import klj.project.repository.util.LogsRepository;
+import klj.project.repository.util.LogsUserQuerydslRepository;
+import klj.project.repository.util.LogsUserRepository;
 import klj.project.util.FileManageUtil;
 import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
@@ -37,10 +39,17 @@ import java.util.Optional;
 public class LogsService {
     private final LogsRepository logsRepository;
     private final LogsQuerydslRepository logsQuerydslRepository;
+    private final LogsUserRepository logsUserRepository;
+    private final LogsUserQuerydslRepository logsUserQuerydslRepository;
 
     public List<LogsResDto> findLogsList(PageReqDto pageReqDto){
         List<LogsResDto> allLogsList = logsQuerydslRepository.findAllLogsList(pageReqDto);
         return allLogsList;
+    }
+
+    public List<LogsResDto> findUserLogsList(PageReqDto pageReqDto){
+        List<LogsResDto> allUserLogsList = logsUserQuerydslRepository.findAllUserLogsList(pageReqDto);
+        return allUserLogsList;
     }
 
 }
