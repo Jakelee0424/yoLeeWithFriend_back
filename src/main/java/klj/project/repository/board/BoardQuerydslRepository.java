@@ -74,7 +74,7 @@ public class BoardQuerydslRepository {
                         builder
                 )
                 .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
-                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
                 .offset((pageReqDto.getCurrentPage() - 1) * pageReqDto.getItemsPerPage())
                 .limit(pageReqDto.getItemsPerPage())
                 .orderBy(QBoard.board.boardId.desc())
@@ -116,7 +116,7 @@ public class BoardQuerydslRepository {
                 .select(
                         QBoard.board.count()
                 ).from(QBoard.board)
-                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
                 .where(
                         builder
                 )

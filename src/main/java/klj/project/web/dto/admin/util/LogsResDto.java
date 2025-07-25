@@ -22,4 +22,6 @@ public class LogsResDto {
     private String ipAddress;
     private LocalDateTime createdDate;
     private String url;
+    private String device;
+    private String browser;
 }
