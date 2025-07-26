@@ -36,13 +36,14 @@ public class BoardQuerydslRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+        builder.and(QBoard.board.boardCategoryCodeId.eq(pageReqDto.getType()));
 
         if (searchText != null && !searchText.isEmpty()) {
             switch (searchKeyword) {
-                case "searchFiled1":
+                case "searchField1":
                     builder.and(QCode.code.name.contains(searchText));
                     break;
-                case "searchFiled2":
+                case "searchField2":
                     builder.and(QBoard.board.boardName.contains(searchText));
                     break;
                 case "all":
@@ -74,7 +75,7 @@ public class BoardQuerydslRepository {
                         builder
                 )
                 .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
-                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
                 .offset((pageReqDto.getCurrentPage() - 1) * pageReqDto.getItemsPerPage())
                 .limit(pageReqDto.getItemsPerPage())
                 .orderBy(QBoard.board.boardId.desc())
@@ -90,6 +91,7 @@ public class BoardQuerydslRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+        builder.and(QBoard.board.boardCategoryCodeId.eq(pageReqDto.getType()));
 
         if (searchText != null && !searchText.isEmpty()) {
             switch (searchKeyword) {
@@ -116,7 +118,7 @@ public class BoardQuerydslRepository {
                 .select(
                         QBoard.board.count()
                 ).from(QBoard.board)
-                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
                 .where(
                         builder
                 )
@@ -129,7 +131,6 @@ public class BoardQuerydslRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
-
 
 
         List<BoardMngrResDto> boardMngrList = queryFactory
@@ -149,7 +150,7 @@ public class BoardQuerydslRepository {
                         builder
                 )
                 .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
-                .join(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
                 .limit(5)
                 .orderBy(QBoard.board.readCnt.desc() , QBoard.board.boardId.desc())
                 .fetch();

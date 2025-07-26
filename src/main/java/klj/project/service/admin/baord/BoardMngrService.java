@@ -96,7 +96,7 @@ public class BoardMngrService {
             String useYn = boardMngrReqDto.getUseYn();
 
             // 메뉴 관리 개발이후 삭제
-            boardMngrReqDto.setBoardCategoryCodeId("boardCategory01");
+            //boardMngrReqDto.setBoardCategoryCodeId("boardCategory01");
             String boardCategoryCodeId = boardMngrReqDto.getBoardCategoryCodeId();
 
             // 보충제 영양정보 선택 기능개선 이후 삭제

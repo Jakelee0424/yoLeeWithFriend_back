@@ -22,4 +22,5 @@ public class SearchDto {
     private LocalDate searchStartDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDate searchEndDate;
+    private String type;
 }
