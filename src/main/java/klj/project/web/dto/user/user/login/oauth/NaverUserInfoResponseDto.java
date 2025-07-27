@@ -12,4 +12,16 @@ public class NaverUserInfoResponseDto {
 
     @JsonProperty("id")
     private String id;
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("gender")
+    private String gender;
+
+    @JsonProperty("birthyear")
+    private String birthyear;
+
+    @JsonProperty("email")
+    private String email;
 }
