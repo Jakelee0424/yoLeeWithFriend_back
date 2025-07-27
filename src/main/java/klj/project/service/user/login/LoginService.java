@@ -12,6 +12,7 @@ import klj.project.repository.user.user.UserRepository;
 import klj.project.web.dto.user.user.login.jwt.TokenDto;
 import klj.project.web.dto.user.user.login.oauth.IdTokenDto;
 import klj.project.web.dto.user.user.login.oauth.NaverInfoResponseDto;
+import klj.project.web.dto.user.user.login.oauth.NaverUserInfoResponseDto;
 import klj.project.web.dto.user.user.login.oauth.OauthTokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +80,7 @@ public class LoginService {
         log.info("Naver Access Token Response: {}", oauthTokenDto.getAccess_token());
         return oauthTokenDto;
     }
-    public String getNaverInfo(OauthTokenDto oauthTokenDto){
+    public NaverUserInfoResponseDto getNaverInfo(OauthTokenDto oauthTokenDto){
         String token = oauthTokenDto.getAccess_token();
         String header = oauthTokenDto.getToken_type()+" "+ token;
         String apiURL = "https://openapi.naver.com/v1/nid/me";
@@ -91,15 +92,19 @@ public class LoginService {
                 .bodyToMono(NaverInfoResponseDto.class);
         NaverInfoResponseDto naverInfoResponseDto= naverInfoResponseDtoMono.block();
         log.info("Naver info response: {}", naverInfoResponseDto.getResponse().getId());
-        return naverInfoResponseDto.getResponse().getId();
+        return naverInfoResponseDto.getResponse();
     }
 
-    public User userNaverLogin(String oauthId){
-        User user = userQuerydslRepository.findByOauthIdAndOauthType(oauthId, OauthType.naver);
+    public User userNaverLogin(NaverUserInfoResponseDto naverInfo){
+
+        User user = userQuerydslRepository.findByOauthIdAndOauthType(naverInfo.getId(), OauthType.naver);
 
         if(user == null){
             long count = userRepository.count();
-            User saveUser = User.createUser(oauthId, OauthType.naver, Authority.user, "피트니스새싹" + count, UserStatus.nomal);
+            User saveUser = User.createUser(naverInfo.getId(),
+                    OauthType.naver, Authority.user, "피트니스새싹" + count, UserStatus.nomal,
+                    naverInfo.getName(),naverInfo.getGender(),naverInfo.getBirthyear(),naverInfo.getEmail()
+            );
             userRepository.save(saveUser);
             user = saveUser;
         }
@@ -141,7 +146,7 @@ public class LoginService {
         return oauthTokenDto;
     }
 
-    public String getKakaoInfo(OauthTokenDto oauthTokenDto) throws IOException {
+    public IdTokenDto getKakaoInfo(OauthTokenDto oauthTokenDto) throws IOException {
         // JWT 디코딩
         String[] jwtParts = oauthTokenDto.getId_token().split("\\.");
         String payload = jwtParts[1];
@@ -156,15 +161,18 @@ public class LoginService {
         
 
         log.info("Kakao info response: {}", idTokenDto.getSub());
-        return idTokenDto.getSub();
+        return idTokenDto;
     }
 
-    public User userKakaoLogin(String oauthId){
-        User user = userQuerydslRepository.findByOauthIdAndOauthType(oauthId, OauthType.kakao);
+    public User userKakaoLogin(IdTokenDto kakaoInfo){
+        User user = userQuerydslRepository.findByOauthIdAndOauthType(kakaoInfo.getSub(), OauthType.kakao);
 
         if(user == null){
             long count = userRepository.count();
-            User saveUser = User.createUser(oauthId, OauthType.kakao, Authority.user, "피트니스새싹" + count, UserStatus.nomal);
+            User saveUser = User.createUser(kakaoInfo.getSub(),
+                    OauthType.kakao, Authority.user, "피트니스새싹" + count, UserStatus.nomal
+                    ,"","","",kakaoInfo.getEmail()
+            );
             userRepository.save(saveUser);
             user = saveUser;
         }

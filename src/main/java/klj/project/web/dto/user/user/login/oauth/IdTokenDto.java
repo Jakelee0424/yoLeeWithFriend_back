@@ -12,5 +12,6 @@ public class IdTokenDto {
     private String iss;
     private String exp;
     private String iat;
+    private String email;
 
 }

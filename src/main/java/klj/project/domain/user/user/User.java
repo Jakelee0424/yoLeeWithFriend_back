@@ -30,23 +30,58 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    private String name;
+
+    private String gender;
+
+    private String birthyear;
+
+    private String email;
+
 
     @Builder
-    public User(String oauthId, OauthType oauthType, Authority authority, String nickName, UserStatus status) {
+    public User(String oauthId,
+                OauthType oauthType,
+                Authority authority,
+                String nickName,
+                UserStatus status,
+                String name,
+                String gender,
+                String birthyear,
+                String email
+
+    ) {
         this.oauthId = oauthId;
         this.oauthType = oauthType;
         this.authority = authority;
         this.nickName = nickName;
         this.status = status;
+        this.name = name;
+        this.gender = gender;
+        this.birthyear = birthyear;
+        this.email = email;
     }
 
-    public static  User createUser (String oauthId, OauthType oauthType, Authority authority, String nickName, UserStatus status){
+    public static  User createUser (String oauthId,
+                                    OauthType oauthType,
+                                    Authority authority,
+                                    String nickName,
+                                    UserStatus status,
+                                    String name,
+                                    String gender,
+                                    String birthyear,
+                                    String email
+    ){
         return User.builder()
                 .oauthId(oauthId)
                 .oauthType(oauthType)
                 .authority(authority)
                 .nickName(nickName)
                 .status(status)
+                .name(name)
+                .gender(gender)
+                .birthyear(birthyear)
+                .email(email)
                 .build();
     }
 
