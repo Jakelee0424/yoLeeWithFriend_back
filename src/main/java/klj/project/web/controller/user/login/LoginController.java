@@ -7,7 +7,9 @@ import klj.project.service.user.login.LoginService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.user.user.login.jwt.TokenDto;
+import klj.project.web.dto.user.user.login.oauth.IdTokenDto;
 import klj.project.web.dto.user.user.login.oauth.NaverOauthRequestDto;
+import klj.project.web.dto.user.user.login.oauth.NaverUserInfoResponseDto;
 import klj.project.web.dto.user.user.login.oauth.OauthTokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +36,9 @@ public class LoginController {
             OauthTokenDto oauthTokenDto = loginService.getNaverAccessToken(code,state);
             log.info("oauthTokenDto: {}", oauthTokenDto);
             // 네이버 AccessToken으로 네이버 ID값 (순수 pk값 ID 이메일주소 아님) 받아오기
-            String oauthId = loginService.getNaverInfo(oauthTokenDto);
+            NaverUserInfoResponseDto naverInfo = loginService.getNaverInfo(oauthTokenDto);
             // 네이버 로그인 로직 타기
-            User user = loginService.userNaverLogin(oauthId);
+            User user = loginService.userNaverLogin(naverInfo);
             // 내부 JwtToken 발급
             TokenDto tokenDto = loginService.authorize(user);
 
@@ -65,9 +67,9 @@ public class LoginController {
             // 카카오 AccessToken 받아오기
             OauthTokenDto oauthTokenDto = loginService.getKakaoAccessToken(code,state);
             // 카카오 AccessToken으로 카카오 ID값 (순수 pk값 ID 이메일주소 아님) 받아오기
-            String oauthId = loginService.getKakaoInfo(oauthTokenDto);
+            IdTokenDto kakaoInfo = loginService.getKakaoInfo(oauthTokenDto);
             // 카카오 로그인 로직 타기
-            User user = loginService.userKakaoLogin(oauthId);
+            User user = loginService.userKakaoLogin(kakaoInfo);
             // 내부 JwtToken 발급
             TokenDto tokenDto = loginService.authorize(user);
 
