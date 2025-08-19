@@ -36,7 +36,9 @@ public class BoardQuerydslRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
-        builder.and(QBoard.board.boardCategoryCodeId.eq(pageReqDto.getType()));
+        if(!pageReqDto.getType().equals("all")) {
+        	builder.and(QBoard.board.boardCategoryCodeId.eq(pageReqDto.getType()));
+        }
 
         if (searchText != null && !searchText.isEmpty()) {
             switch (searchKeyword) {
