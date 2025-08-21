@@ -16,6 +16,9 @@ import klj.project.domain.util.QLogs;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.common.PageDto;
 import klj.project.web.dto.admin.common.PageReqDto;
+import klj.project.web.dto.user.board.BoardReqDto;
+import klj.project.web.dto.user.board.BoardResDto;
+import klj.project.web.dto.user.board.BrandResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +39,9 @@ public class BoardQuerydslRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
-        builder.and(QBoard.board.boardCategoryCodeId.eq(pageReqDto.getType()));
+        if(!pageReqDto.getType().equals("all")) {
+        	builder.and(QBoard.board.boardCategoryCodeId.eq(pageReqDto.getType()));
+        }
 
         if (searchText != null && !searchText.isEmpty()) {
             switch (searchKeyword) {
@@ -163,8 +168,6 @@ public class BoardQuerydslRepository {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
 
-
-
         List<BoardMngrResDto> boardMngrList = queryFactory
                 .select(Projections.fields(BoardMngrResDto.class,
                         QBoard.board.boardId,
@@ -188,5 +191,64 @@ public class BoardQuerydslRepository {
 
         return boardMngrList;
     }
+
+	public List<BrandResDto> getAllBrandList() {
+		
+		List<BrandResDto> brandList = queryFactory
+                .select(Projections.fields(BrandResDto.class,
+                        QCode.code.id,
+                        QCode.code.name
+                )).from(QCode.code)
+                .where(
+                		QCode.code.codeParent.id.eq("boardBrand")
+                )
+                .fetch();
+		
+		return brandList;
+	}
+
+	public List<BoardResDto> findBoardList(BoardReqDto boardReqDto) {
+
+		String type = boardReqDto.getType();
+		String brandId = boardReqDto.getBrandId();
+		String queryParam = boardReqDto.getQueryParam();
+		
+		BooleanBuilder builder = new BooleanBuilder();
+		
+        builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+        
+        if(!type.equals("all")) {
+        	builder.and(QBoard.board.boardCategoryCodeId.eq(type));
+        }
+        
+        if(!brandId.equals("boardBand00")) {
+        	builder.and(QBoard.board.brandCodeId.eq(brandId));
+        }
+        
+        if(!queryParam.equals("")) {
+        	builder.and(QBoard.board.boardName.contains(queryParam));
+        }
+		
+		List<BoardResDto> boardList = queryFactory
+                .select(Projections.fields(BoardResDto.class,
+                        QBoard.board.boardId,
+                        QBoard.board.brandCodeId,
+                        QBoard.board.boardName,
+                        QBoard.board.boardCategoryCodeId,
+                        QBoard.board.useYn,
+                        QBoard.board.createDate,
+                        QBoard.board.modifyDate,
+                        QBoard.board.nuinfoId,
+                        QFiles.files.filePath.as("imgUrl")
+                )).from(QBoard.board)
+                .where(
+                        builder
+                )
+                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .fetch();
+
+        return boardList;
+	}
 
 }
