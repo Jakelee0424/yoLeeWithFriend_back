@@ -13,6 +13,9 @@ import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.board.*;
 import klj.project.web.dto.admin.common.PageDto;
 import klj.project.web.dto.admin.common.PageReqDto;
+import klj.project.web.dto.user.board.BoardReqDto;
+import klj.project.web.dto.user.board.BoardResDto;
+import klj.project.web.dto.user.board.BrandResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -42,6 +45,47 @@ public class BoardController {
                     .create()
                     .succeed()
                     .buildWith(boardMainList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+    
+    @GetMapping("/board/find")
+    public KljResponse<List<BoardResDto>> findBoardList(@ModelAttribute BoardReqDto boardReqDto) {
+
+        try {
+
+            List<BoardResDto> boardfindList = boardService.findBoardList(boardReqDto);
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(boardfindList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+    
+    @GetMapping("/board/brand")
+    public KljResponse<List<BrandResDto>> getBrandList() {
+
+        try {
+
+            List<BrandResDto> boardBrandList = boardService.getAllBrandList();
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(boardBrandList);
         }catch (Exception e){
             log.info(e.toString());
             return KljResponse
