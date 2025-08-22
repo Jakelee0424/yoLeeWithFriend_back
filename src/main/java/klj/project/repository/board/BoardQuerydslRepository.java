@@ -8,6 +8,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import klj.project.domain.board.QBoard;
+import klj.project.domain.board.QNuinfo;
 import klj.project.domain.code.QCode;
 import klj.project.domain.file.FileGroup;
 import klj.project.domain.file.QFileGroup;
@@ -19,6 +20,7 @@ import klj.project.web.dto.admin.common.PageReqDto;
 import klj.project.web.dto.user.board.BoardReqDto;
 import klj.project.web.dto.user.board.BoardResDto;
 import klj.project.web.dto.user.board.BrandResDto;
+import klj.project.web.dto.user.board.NutritionResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -249,6 +251,19 @@ public class BoardQuerydslRepository {
                 .fetch();
 
         return boardList;
+	}
+
+	public List<NutritionResDto> getNutriInfo(int boardId) {
+		
+		List<NutritionResDto> nutriInfo = queryFactory
+                .select(Projections.fields(NutritionResDto.class,
+                		QCode.code.name,
+                        QNuinfo.nuinfo.value
+                )).from(QCode.code)
+                .leftJoin(QNuinfo.nuinfo).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .fetch();
+		
+		return nutriInfo;
 	}
 
 }
