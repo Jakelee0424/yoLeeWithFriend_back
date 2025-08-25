@@ -13,6 +13,7 @@ import klj.project.web.dto.KljResponse;
 import klj.project.web.dto.admin.board.*;
 import klj.project.web.dto.admin.common.PageDto;
 import klj.project.web.dto.admin.common.PageReqDto;
+import klj.project.web.dto.user.board.BoardUserResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,30 @@ public class BoardController {
                     .create()
                     .succeed()
                     .buildWith(boardMainList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+    @GetMapping("/board/randomAll")
+    public KljResponse<List<BoardUserResDto>> findBoardRandomList(
+            @RequestParam("type") String type,
+            @RequestParam("clickCnt") int clickCnt
+    ) {
+
+        try {
+
+            List<BoardUserResDto> boardRandomList = boardService.findBoardRandomList(type, clickCnt);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(boardRandomList);
         }catch (Exception e){
             log.info(e.toString());
             return KljResponse

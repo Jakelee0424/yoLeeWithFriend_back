@@ -3,6 +3,7 @@ package klj.project.service.user.baord;
 
 import klj.project.repository.board.BoardQuerydslRepository;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.user.board.BoardUserResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,4 +27,10 @@ public class BoardService {
 
         return boardMngrList;
     }
+
+    public List<BoardUserResDto> findBoardRandomList(String type, int clickCnt){
+        List<BoardUserResDto> boardRandomList = boardQuerydslRepository.findAllBoardRandomList(type, clickCnt);
+        return boardRandomList;
+    }
+
 }

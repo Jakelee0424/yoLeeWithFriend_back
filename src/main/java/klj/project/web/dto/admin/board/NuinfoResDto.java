@@ -1,19 +1,18 @@
 package klj.project.web.dto.admin.board;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class NuinfoResDto {
 
     private Long sn;
     private String codeId;
     private Long boardId;
     private String value;
+    private String name;
 
 }
