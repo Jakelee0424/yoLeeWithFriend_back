@@ -1,25 +1,18 @@
 package klj.project.web.controller.user.board;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import klj.project.repository.board.BoardQuerydslRepository;
-import klj.project.service.admin.baord.BoardMngrService;
-import klj.project.service.admin.baord.NuinfoService;
 import klj.project.service.user.baord.BoardService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
-import klj.project.web.dto.admin.board.*;
-import klj.project.web.dto.admin.common.PageDto;
-import klj.project.web.dto.admin.common.PageReqDto;
-import klj.project.web.dto.user.board.BoardUserResDto;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.user.board.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -43,6 +36,68 @@ public class BoardController {
                     .create()
                     .succeed()
                     .buildWith(boardMainList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+    @GetMapping("/board/find")
+    public KljResponse<List<BoardResDto>> findBoardList(@ModelAttribute BoardReqDto boardReqDto) {
+
+        try {
+
+            List<BoardResDto> boardfindList = boardService.findBoardList(boardReqDto);
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(boardfindList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+    @GetMapping("/board/brand")
+    public KljResponse<List<BrandResDto>> getBrandList() {
+
+        try {
+
+            List<BrandResDto> boardBrandList = boardService.getAllBrandList();
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(boardBrandList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+    @GetMapping("/board/getNutriInfo")
+    public KljResponse<List<NutritionResDto>> getNutriInfo(@RequestParam("boardId") Long boardId) {
+
+        try {
+
+            List<NutritionResDto> nutriInfoList = boardService.getNutriInfo(boardId);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(nutriInfoList);
         }catch (Exception e){
             log.info(e.toString());
             return KljResponse

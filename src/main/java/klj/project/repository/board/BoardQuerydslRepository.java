@@ -13,6 +13,10 @@ import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.NuinfoResDto;
 import klj.project.web.dto.admin.common.PageReqDto;
 import klj.project.web.dto.user.board.BoardUserResDto;
+import klj.project.web.dto.user.board.BoardReqDto;
+import klj.project.web.dto.user.board.BoardResDto;
+import klj.project.web.dto.user.board.BrandResDto;
+import klj.project.web.dto.user.board.NutritionResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -186,6 +190,86 @@ public class BoardQuerydslRepository {
         return boardMngrList;
     }
 
+    public List<BrandResDto> getAllBrandList() {
+
+        List<BrandResDto> brandList = queryFactory
+                .select(Projections.fields(BrandResDto.class,
+                        QCode.code.id,
+                        QCode.code.name
+                )).from(QCode.code)
+                .where(
+                        QCode.code.codeParent.id.eq("boardBrand")
+                )
+                .fetch();
+
+        return brandList;
+    }
+
+    public List<BoardResDto> findBoardList(BoardReqDto boardReqDto) {
+
+        String type = boardReqDto.getType();
+        String brandId = boardReqDto.getBrandId();
+        String queryParam = boardReqDto.getQueryParam();
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+
+        if(!type.equals("all")) {
+            builder.and(QBoard.board.boardCategoryCodeId.eq(type));
+        }
+
+        if(!brandId.equals("boardBand00")) {
+            builder.and(QBoard.board.brandCodeId.eq(brandId));
+        }
+
+        if(!queryParam.equals("")) {
+            builder.and(QBoard.board.boardName.contains(queryParam));
+        }
+
+        List<BoardResDto> boardList = queryFactory
+                .select(Projections.fields(BoardResDto.class,
+                        QBoard.board.boardId,
+                        QBoard.board.brandCodeId,
+                        QBoard.board.boardName,
+                        QBoard.board.boardCategoryCodeId,
+                        QBoard.board.useYn,
+                        QBoard.board.createDate,
+                        QBoard.board.modifyDate,
+                        QBoard.board.nuinfoId,
+                        QFiles.files.filePath.as("imgUrl")
+                )).from(QBoard.board)
+                .where(
+                        builder
+                )
+                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .fetch();
+
+        return boardList;
+    }
+
+    public List<NutritionResDto> getNutriInfo(Long boardId) {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(QCode.code.codeParent.id.eq("nutritionInformation01")); // 기본 조건
+        builder.and(QNuinfo.nuinfo.boardId.eq(boardId));
+
+        List<NutritionResDto> nutriInfo = queryFactory
+                .select(Projections.fields(NutritionResDto.class,
+                        QCode.code.name.as("name"),
+                        QNuinfo.nuinfo.value.as("value")
+                ))
+                .from(QCode.code)
+                .leftJoin(QNuinfo.nuinfo)
+                .on(QNuinfo.nuinfo.codeId.eq(QCode.code.id))
+                .where(
+                        builder
+                )
+                .fetch();
+
+        return nutriInfo;
+    }
+
     public List<BoardUserResDto> findAllBoardRandomList (String type, int clickCnt){
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
@@ -257,5 +341,7 @@ public class BoardQuerydslRepository {
 
         return new ArrayList<>(boardMap.values());
     }
+
+
 
 }

@@ -4,6 +4,10 @@ package klj.project.service.user.baord;
 import klj.project.repository.board.BoardQuerydslRepository;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.user.board.BoardUserResDto;
+import klj.project.web.dto.user.board.BoardReqDto;
+import klj.project.web.dto.user.board.BoardResDto;
+import klj.project.web.dto.user.board.BrandResDto;
+import klj.project.web.dto.user.board.NutritionResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,5 +36,25 @@ public class BoardService {
         List<BoardUserResDto> boardRandomList = boardQuerydslRepository.findAllBoardRandomList(type, clickCnt);
         return boardRandomList;
     }
+
+
+	public List<BrandResDto> getAllBrandList() {
+		
+		List<BrandResDto> brandList = boardQuerydslRepository.getAllBrandList();
+		
+		return brandList;
+	}
+
+	public List<BoardResDto> findBoardList(BoardReqDto boardReqDto) {
+		List<BoardResDto> boardfindList = boardQuerydslRepository.findBoardList(boardReqDto);
+		
+		return boardfindList;
+	}
+
+	public List<NutritionResDto> getNutriInfo(Long boardId) {
+		List<NutritionResDto> nutriInfo = boardQuerydslRepository.getNutriInfo(boardId);
+		
+		return nutriInfo;
+	}
 
 }
