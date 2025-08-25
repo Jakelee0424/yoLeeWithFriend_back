@@ -253,17 +253,26 @@ public class BoardQuerydslRepository {
         return boardList;
 	}
 
-	public List<NutritionResDto> getNutriInfo(int boardId) {
+	public List<NutritionResDto> getNutriInfo(Long boardId) {
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(QCode.code.codeParent.id.eq("nutritionInformation01")); // 기본 조건
+		builder.and(QNuinfo.nuinfo.boardId.eq(boardId));
 		
 		List<NutritionResDto> nutriInfo = queryFactory
-                .select(Projections.fields(NutritionResDto.class,
-                		QCode.code.name,
-                        QNuinfo.nuinfo.value
-                )).from(QCode.code)
-                .leftJoin(QNuinfo.nuinfo).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
-                .fetch();
+			    .select(Projections.fields(NutritionResDto.class,
+			            QCode.code.name.as("name"),
+			            QNuinfo.nuinfo.value.as("value")
+			    ))
+			    .from(QCode.code)
+			    .leftJoin(QNuinfo.nuinfo)
+			    .on(QNuinfo.nuinfo.codeId.eq(QCode.code.id)) 
+			    .where(
+			    		builder
+			    		)
+			    .fetch();
 		
 		return nutriInfo;
 	}
+	
 
 }

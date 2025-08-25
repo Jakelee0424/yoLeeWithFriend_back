@@ -98,7 +98,7 @@ public class BoardController {
     }
     
     @GetMapping("/board/getNutriInfo")
-    public KljResponse<List<NutritionResDto>> getNutriInfo(@RequestParam("boardId") int boardId) {
+    public KljResponse<List<NutritionResDto>> getNutriInfo(@RequestParam("boardId") Long boardId) {
 
         try {
 

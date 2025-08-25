@@ -44,7 +44,7 @@ public class BoardService {
 		return boardfindList;
 	}
 
-	public List<NutritionResDto> getNutriInfo(int boardId) {
+	public List<NutritionResDto> getNutriInfo(Long boardId) {
 		List<NutritionResDto> nutriInfo = boardQuerydslRepository.getNutriInfo(boardId);
 		
 		return nutriInfo;
