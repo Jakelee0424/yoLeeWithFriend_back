@@ -1,6 +1,6 @@
-package klj.project.web.dto.admin.board;
+package klj.project.web.dto.user.board;
 
-import klj.project.domain.code.Code;
+import klj.project.web.dto.admin.board.NuinfoResDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardMngrResDto {
+public class BoardUserResDto {
     private Long boardId;
     private String boardName;
     private String brandCodeId;
@@ -27,5 +27,8 @@ public class BoardMngrResDto {
     private String imgUrl;
     private Long readCnt;
     private String fileGroupId;
+
+    @Nullable
+    private List<NuinfoResDto> nuinfoResDtoList;
 
 }

@@ -110,24 +110,26 @@ public class UserController {
     @GetMapping(path = "/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public KljResponse<UserLoginDto> userLoginInfo(Authentication authentication) {
         try {
-            User user = (User) authentication.getPrincipal();
-            log.info(user.getOauthId());
-            User loginUser = userRepository.findByOauthId(user.getOauthId()).get();
-            String userFilePath = "";
+            if(authentication !=null){
+                User user = (User) authentication.getPrincipal();
+                log.info(user.getOauthId());
+                User loginUser = userRepository.findByOauthId(user.getOauthId()).get();
+                String userFilePath = "";
 //            if(loginUser.getFileGroup() !=null){
 //                FileGroup fileGroup = loginUser.getFileGroup();
 //                Long fileGroupId = fileGroup.getId();
 //                Files files = fileRepository.findByFileGroupId(fileGroupId).get();
 //                userFilePath = files.getFilePath();
 //            }
-
-
-            UserLoginDto userDto = new UserLoginDto(loginUser.getId(),loginUser.getNickName(),userFilePath);
-
-
-            return KljResponse.create()
-                    .succeed()
-                    .buildWith(userDto);
+                UserLoginDto userDto = new UserLoginDto(loginUser.getId(),loginUser.getNickName(),userFilePath);
+                return KljResponse.create()
+                        .succeed()
+                        .buildWith(userDto);
+            }else{
+                return KljResponse.create()
+                        .succeed()
+                        .buildWith(null);
+            }
         }catch (Exception e){
             log.info(e.toString());
             return KljResponse
