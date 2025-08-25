@@ -1,28 +1,18 @@
 package klj.project.web.controller.user.board;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import klj.project.repository.board.BoardQuerydslRepository;
-import klj.project.service.admin.baord.BoardMngrService;
-import klj.project.service.admin.baord.NuinfoService;
 import klj.project.service.user.baord.BoardService;
 import klj.project.web.dto.Error;
 import klj.project.web.dto.KljResponse;
-import klj.project.web.dto.admin.board.*;
-import klj.project.web.dto.admin.common.PageDto;
-import klj.project.web.dto.admin.common.PageReqDto;
-import klj.project.web.dto.user.board.BoardReqDto;
-import klj.project.web.dto.user.board.BoardResDto;
-import klj.project.web.dto.user.board.BrandResDto;
-import klj.project.web.dto.user.board.NutritionResDto;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.user.board.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -55,7 +45,7 @@ public class BoardController {
         }
 
     }
-    
+
     @GetMapping("/board/find")
     public KljResponse<List<BoardResDto>> findBoardList(@ModelAttribute BoardReqDto boardReqDto) {
 
@@ -75,7 +65,7 @@ public class BoardController {
         }
 
     }
-    
+
     @GetMapping("/board/brand")
     public KljResponse<List<BrandResDto>> getBrandList() {
 
@@ -96,7 +86,7 @@ public class BoardController {
         }
 
     }
-    
+
     @GetMapping("/board/getNutriInfo")
     public KljResponse<List<NutritionResDto>> getNutriInfo(@RequestParam("boardId") Long boardId) {
 
@@ -108,6 +98,30 @@ public class BoardController {
                     .create()
                     .succeed()
                     .buildWith(nutriInfoList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
+    @GetMapping("/board/randomAll")
+    public KljResponse<List<BoardUserResDto>> findBoardRandomList(
+            @RequestParam("type") String type,
+            @RequestParam("clickCnt") int clickCnt
+    ) {
+
+        try {
+
+            List<BoardUserResDto> boardRandomList = boardService.findBoardRandomList(type, clickCnt);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(boardRandomList);
         }catch (Exception e){
             log.info(e.toString());
             return KljResponse

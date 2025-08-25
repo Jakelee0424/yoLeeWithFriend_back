@@ -44,12 +44,12 @@ public class Nuinfo {
 
 
     public NuinfoResDto toResponseDto() {
-        return new NuinfoResDto(
-                this.sn,
-                this.codeId,
-                this.boardId,
-                this.value
-        );
+        return NuinfoResDto.builder()
+                .boardId(this.boardId)
+                .sn(this.sn)
+                .codeId(this.codeId)
+                .value(this.value)
+                .build();
     }
 
     public Nuinfo changeNuInfo (String value){

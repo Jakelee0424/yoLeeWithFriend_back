@@ -3,6 +3,7 @@ package klj.project.service.user.baord;
 
 import klj.project.repository.board.BoardQuerydslRepository;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
+import klj.project.web.dto.user.board.BoardUserResDto;
 import klj.project.web.dto.user.board.BoardReqDto;
 import klj.project.web.dto.user.board.BoardResDto;
 import klj.project.web.dto.user.board.BrandResDto;
@@ -31,6 +32,12 @@ public class BoardService {
         return boardMngrList;
     }
 
+    public List<BoardUserResDto> findBoardRandomList(String type, int clickCnt){
+        List<BoardUserResDto> boardRandomList = boardQuerydslRepository.findAllBoardRandomList(type, clickCnt);
+        return boardRandomList;
+    }
+
+
 	public List<BrandResDto> getAllBrandList() {
 		
 		List<BrandResDto> brandList = boardQuerydslRepository.getAllBrandList();
@@ -49,4 +56,5 @@ public class BoardService {
 		
 		return nutriInfo;
 	}
+
 }
