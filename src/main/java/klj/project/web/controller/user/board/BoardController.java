@@ -16,6 +16,7 @@ import klj.project.web.dto.admin.common.PageReqDto;
 import klj.project.web.dto.user.board.BoardReqDto;
 import klj.project.web.dto.user.board.BoardResDto;
 import klj.project.web.dto.user.board.BrandResDto;
+import klj.project.web.dto.user.board.NutritionResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -86,6 +87,27 @@ public class BoardController {
                     .create()
                     .succeed()
                     .buildWith(boardBrandList);
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+    
+    @GetMapping("/board/getNutriInfo")
+    public KljResponse<List<NutritionResDto>> getNutriInfo(@RequestParam("boardId") Long boardId) {
+
+        try {
+
+            List<NutritionResDto> nutriInfoList = boardService.getNutriInfo(boardId);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(nutriInfoList);
         }catch (Exception e){
             log.info(e.toString());
             return KljResponse
