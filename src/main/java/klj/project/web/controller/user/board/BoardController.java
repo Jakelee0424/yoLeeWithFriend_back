@@ -9,10 +9,7 @@ import klj.project.web.dto.user.board.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -108,15 +105,14 @@ public class BoardController {
 
     }
 
-    @GetMapping("/board/randomAll")
+    @PostMapping("/board/randomAll")
     public KljResponse<List<BoardUserResDto>> findBoardRandomList(
-            @RequestParam("type") String type,
-            @RequestParam("clickCnt") int clickCnt
+            @RequestBody BoardRandomReqDto boardRandomReqDto
     ) {
 
         try {
 
-            List<BoardUserResDto> boardRandomList = boardService.findBoardRandomList(type, clickCnt);
+            List<BoardUserResDto> boardRandomList = boardService.findBoardRandomList(boardRandomReqDto.getType(), boardRandomReqDto.getBoardList(), boardRandomReqDto.getClickCnt());
 
             return KljResponse
                     .create()
