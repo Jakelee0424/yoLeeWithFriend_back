@@ -9,6 +9,7 @@ import klj.project.domain.board.QBoard;
 import klj.project.domain.board.QNuinfo;
 import klj.project.domain.code.QCode;
 import klj.project.domain.file.QFiles;
+import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.NuinfoResDto;
 import klj.project.web.dto.admin.common.PageReqDto;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -270,10 +272,16 @@ public class BoardQuerydslRepository {
         return nutriInfo;
     }
 
-    public List<BoardUserResDto> findAllBoardRandomList (String type, int clickCnt){
+    public List<BoardUserResDto> findAllBoardRandomList (String type, List<BoardMngrReqDto> boardList, int clickCnt){
+        List<Long> excludeIds = boardList.stream()
+                .map(BoardMngrReqDto::getBoardId)
+                .collect(Collectors.toList());
+
+
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
         builder.and(QBoard.board.boardCategoryCodeId.eq(type));
+        builder.and(QBoard.board.boardId.notIn(excludeIds));
         int pageSize = 5;  // 한 번에 늘어나는 개수
         long limit = (clickCnt + 1) * pageSize;
 
