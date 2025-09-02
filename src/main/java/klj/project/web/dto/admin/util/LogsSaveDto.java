@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class LogsSaveDto {
 
     private Long id;
-    private String userId;
+    private Long userId;
     private LogsType logsType;
     private String description;
     private String ipAddress;

@@ -75,7 +75,7 @@ public class LogsController {
         try {
             LocalDateTime localDateTime = LocalDateTime.now();
             LogsUser logsUser = new LogsUser(
-                    0L,
+                    logsSaveDto.getUserId(),
                     LogsType.GET,
                     logsSaveDto.getDescription(),
                     logsSaveDto.getIpAddress(),
