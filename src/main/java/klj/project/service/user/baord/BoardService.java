@@ -2,6 +2,7 @@ package klj.project.service.user.baord;
 
 
 import klj.project.repository.board.BoardQuerydslRepository;
+import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.user.board.BoardUserResDto;
 import klj.project.web.dto.user.board.BoardReqDto;
@@ -32,8 +33,8 @@ public class BoardService {
         return boardMngrList;
     }
 
-    public List<BoardUserResDto> findBoardRandomList(String type, int clickCnt){
-        List<BoardUserResDto> boardRandomList = boardQuerydslRepository.findAllBoardRandomList(type, clickCnt);
+    public List<BoardUserResDto> findBoardRandomList(String type, List<BoardMngrReqDto> boardList, int clickCnt){
+        List<BoardUserResDto> boardRandomList = boardQuerydslRepository.findAllBoardRandomList(type, boardList, clickCnt);
         return boardRandomList;
     }
 
