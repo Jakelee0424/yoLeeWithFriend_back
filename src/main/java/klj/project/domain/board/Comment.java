@@ -1,0 +1,47 @@
+package klj.project.domain.board;
+
+import jakarta.persistence.*;
+import klj.project.domain.user.user.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor
+public class Comment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
+    private Long commentId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String content;
+
+    @Column(name = "taste_rate", nullable = false)
+    private Integer tasteRate;
+
+    @Column(name = "price_rate", nullable = false)
+    private Integer priceRate;
+
+    @Column(name = "ingredient_rate", nullable = false)
+    private Integer ingredientRate;
+
+    public Comment(Board board, User user, String content,
+                   Integer tasteRate, Integer priceRate, Integer ingredientRate) {
+        this.board = board;
+        this.user = user;
+        this.content = content;
+        this.tasteRate = tasteRate;
+        this.priceRate = priceRate;
+        this.ingredientRate = ingredientRate;
+    }
+}
