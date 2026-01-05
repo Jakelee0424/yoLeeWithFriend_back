@@ -38,6 +38,9 @@ public class User {
 
     private String email;
 
+    @Column(name = "file_group_id")
+    private Long fileGroupId;
+
 
     @Builder
     public User(String oauthId,
@@ -87,6 +90,11 @@ public class User {
 
     public User changeNickName (String nickName){
         this.nickName = nickName;
+        return this;
+    }
+
+    public User changeProFileImg (Long fileGroupId){
+        this.fileGroupId = fileGroupId;
         return this;
     }
 
