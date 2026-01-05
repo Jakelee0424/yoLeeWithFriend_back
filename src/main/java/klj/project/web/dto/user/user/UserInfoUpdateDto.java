@@ -8,6 +8,6 @@ import lombok.Getter;
 public class UserInfoUpdateDto {
 
     private String nickName;
-    private String file;
+    private Long fileGroupId;
 
 }
