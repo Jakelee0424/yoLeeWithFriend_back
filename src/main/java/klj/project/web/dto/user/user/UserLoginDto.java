@@ -12,4 +12,6 @@ public class UserLoginDto {
     private Long id;
     private String nickName;
     private String profilePath;
+    private String oauthType;
+
 }
