@@ -8,6 +8,7 @@ import klj.project.domain.user.user.User;
 import klj.project.repository.user.board.CommentQuerydslRepository;
 import klj.project.repository.user.board.CommentRepository;
 import klj.project.web.dto.user.board.BoardRateResDto;
+import klj.project.web.dto.user.board.CommentCountResDto;
 import klj.project.web.dto.user.board.CommentReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +24,11 @@ public class CommentService {
     @Transactional(readOnly = true)
     public BoardRateResDto getBoardRate(Long boardId) {
         return commentQuerydslRepository.selectBoardRate(boardId);
+    }
+
+    public CommentCountResDto getCommentCount(Long userId) {
+        CommentCountResDto commentCountResDto = commentQuerydslRepository.getCommentCount(userId);
+
+        return commentCountResDto;
     }
 }

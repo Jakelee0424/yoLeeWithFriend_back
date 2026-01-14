@@ -35,6 +35,9 @@ public class Comment {
     @Column(name = "ingredient_rate", nullable = false)
     private Integer ingredientRate;
 
+    @Column(name = "del_yn")
+    private String delYn;
+
     public Comment(Board board, User user, String content,
                    Integer tasteRate, Integer priceRate, Integer ingredientRate) {
         this.board = board;

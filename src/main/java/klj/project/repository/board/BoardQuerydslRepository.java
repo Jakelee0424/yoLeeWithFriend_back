@@ -6,6 +6,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import klj.project.domain.board.QBoard;
+import klj.project.domain.board.QComment;
 import klj.project.domain.board.QNuinfo;
 import klj.project.domain.code.QCode;
 import klj.project.domain.file.QFiles;
@@ -13,11 +14,7 @@ import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.board.NuinfoResDto;
 import klj.project.web.dto.admin.common.PageReqDto;
-import klj.project.web.dto.user.board.BoardUserResDto;
-import klj.project.web.dto.user.board.BoardReqDto;
-import klj.project.web.dto.user.board.BoardResDto;
-import klj.project.web.dto.user.board.BrandResDto;
-import klj.project.web.dto.user.board.NutritionResDto;
+import klj.project.web.dto.user.board.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -349,7 +346,4 @@ public class BoardQuerydslRepository {
 
         return new ArrayList<>(boardMap.values());
     }
-
-
-
 }
