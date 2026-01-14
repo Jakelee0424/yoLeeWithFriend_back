@@ -137,7 +137,7 @@ public class UserController {
                     Files files = fileRepository.findByFileGroupId(fileGroupId).get();
                     userFilePath = files.getFilePath();
                 }
-                UserLoginDto userDto = new UserLoginDto(loginUser.getId(),loginUser.getNickName(),userFilePath, loginUser.getOauthType().toString());
+                UserLoginDto userDto = new UserLoginDto(loginUser.getId(),loginUser.getNickName(),userFilePath, loginUser.getOauthType().toString(), loginUser.getRegDt());
                 return KljResponse.create()
                         .succeed()
                         .buildWith(userDto);
@@ -156,7 +156,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/user/img", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public KljResponse<User> updateUserProFileImg(@RequestParam("data") String data, @RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
+    public KljResponse<UserLoginDto> updateUserProFileImg(@RequestParam("data") String data, @RequestParam(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         try {
             Long fileGroupId = null;
@@ -191,11 +191,18 @@ public class UserController {
             }
             User changeUser = user.changeProFileImg(fileGroupId);
             userRepository.save(changeUser);
+            String userFilePath = "";
+            if(changeUser.getFileGroupId() !=null){
+                Long tempfileGroupId = changeUser.getFileGroupId();
+                Files files = fileRepository.findByFileGroupId(tempfileGroupId).get();
+                userFilePath = files.getFilePath();
+            }
+            UserLoginDto userDto = new UserLoginDto(changeUser.getId(),changeUser.getNickName(),userFilePath, changeUser.getOauthType().toString(), changeUser.getRegDt());
 
             return KljResponse
                     .create()
                     .succeed()
-                    .buildWith(changeUser);
+                    .buildWith(userDto);
 
         }catch (Exception e){
             log.info(e.toString());

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -41,6 +43,8 @@ public class User {
     @Column(name = "file_group_id")
     private Long fileGroupId;
 
+    @Column(name = "reg_dt")
+    private LocalDateTime regDt;
 
     @Builder
     public User(String oauthId,

@@ -4,11 +4,7 @@ package klj.project.service.user.baord;
 import klj.project.repository.board.BoardQuerydslRepository;
 import klj.project.web.dto.admin.board.BoardMngrReqDto;
 import klj.project.web.dto.admin.board.BoardMngrResDto;
-import klj.project.web.dto.user.board.BoardUserResDto;
-import klj.project.web.dto.user.board.BoardReqDto;
-import klj.project.web.dto.user.board.BoardResDto;
-import klj.project.web.dto.user.board.BrandResDto;
-import klj.project.web.dto.user.board.NutritionResDto;
+import klj.project.web.dto.user.board.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,5 +53,7 @@ public class BoardService {
 		
 		return nutriInfo;
 	}
+
+
 
 }

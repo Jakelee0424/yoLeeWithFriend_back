@@ -178,7 +178,7 @@ public class BoardController {
     @GetMapping("/board/getBoardCommentById")
     public KljResponse<List<CommentResDto>> getBoardCommentById(@RequestParam Long boardId) {
         try {
-            List<Comment> commentList = commentRepository.findByBoard_BoardId(boardId);
+            List<Comment> commentList = commentRepository.findByBoard_BoardIdAndDelYn(boardId, "N");
             List<CommentResDto> commentResDtoList = commentList.stream()
                     .map(CommentResDto::fromEntity)
                     .collect(Collectors.toList());
@@ -209,6 +209,44 @@ public class BoardController {
             return KljResponse
                     .create()
                     .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 평점 조회 중 오류가 발생하였습니다,"))
+                    .buildWith(null);
+        }
+    }
+
+    @GetMapping("/board/getBoardCommentCountByUserId")
+    public KljResponse<CommentCountResDto> getBoardCommentCountByUserId(@RequestParam Long userId) {
+        try {
+            CommentCountResDto commentCountResDto = commentService.getCommentCount(userId);
+
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(commentCountResDto);
+        } catch (Exception e) {
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 숫자 조회에 실패하였습니다."))
+                    .buildWith(null);
+        }
+    }
+
+    @GetMapping("/board/getBoardCommentByUserId")
+    public KljResponse<List<CommentResDto>> getBoardCommentByUserId(@RequestParam Long userId) {
+        try {
+            List<Comment> commentList = commentRepository.findByUserIdAndDelYn(userId, "N");
+            List<CommentResDto> commentResDtoList = commentList.stream()
+                    .map(CommentResDto::fromEntity)
+                    .collect(Collectors.toList());
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(commentResDtoList);
+        } catch (Exception e) {
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 목록조회에 실패하였습니다."))
                     .buildWith(null);
         }
     }
