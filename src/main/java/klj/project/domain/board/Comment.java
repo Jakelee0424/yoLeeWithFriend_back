@@ -5,6 +5,8 @@ import klj.project.domain.user.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -37,6 +39,9 @@ public class Comment {
 
     @Column(name = "del_yn")
     private String delYn;
+
+    @Column(name = "reg_dt")
+    private LocalDateTime regDt;
 
     public Comment(Board board, User user, String content,
                    Integer tasteRate, Integer priceRate, Integer ingredientRate) {

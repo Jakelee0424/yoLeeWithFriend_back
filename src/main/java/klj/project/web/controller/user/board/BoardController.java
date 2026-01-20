@@ -234,7 +234,7 @@ public class BoardController {
     @GetMapping("/board/getBoardCommentByUserId")
     public KljResponse<List<CommentResDto>> getBoardCommentByUserId(@RequestParam Long userId) {
         try {
-            List<Comment> commentList = commentRepository.findByUserIdAndDelYn(userId, "N");
+            List<Comment> commentList = commentRepository.findFirst3ByUserIdAndDelYnOrderByCommentIdDesc(userId, "N");
             List<CommentResDto> commentResDtoList = commentList.stream()
                     .map(CommentResDto::fromEntity)
                     .collect(Collectors.toList());
