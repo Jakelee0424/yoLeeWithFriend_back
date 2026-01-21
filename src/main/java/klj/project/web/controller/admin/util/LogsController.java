@@ -236,6 +236,26 @@ public class LogsController {
 
     }
 
+    @GetMapping("/logs/user/{userId}")
+    public KljResponse<List<BoardMngrResDto>> findUserBoardLogsList(@PathVariable("id") Long userId) {
+
+        try {
+            List<BoardMngrResDto> logsList = logsService.findUserBoardLogsList(userId);
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(logsList);
+
+        }catch (Exception e){
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR,"에러"))
+                    .buildWith(null);
+        }
+
+    }
+
 
 
 }

@@ -1,5 +1,6 @@
 package klj.project.web.dto.admin.board;
 
+import klj.project.domain.board.Board;
 import klj.project.domain.code.Code;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

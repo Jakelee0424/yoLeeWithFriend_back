@@ -21,5 +21,6 @@ public class BannerResDto {
     private String delYn;
     private String imgUrl;
     private Long fileGroupId;
+    private String url;
     
 }

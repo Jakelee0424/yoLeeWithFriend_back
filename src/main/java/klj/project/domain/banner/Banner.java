@@ -47,6 +47,9 @@ public class Banner {
 	@CreatedDate
 	private LocalDateTime createdAt;
 
+	@Column(name = "url")
+	private String url;
+
 	@Builder
 	public Banner(Long bannerId, String bannerName, int validDays, int level, String delYn, LocalDateTime createdAt, Long fileGroupId) {
 		this.bannerId = bannerId;
@@ -90,7 +93,8 @@ public class Banner {
 			this.level,
 			this.delYn,
 			imgUrl,
-			this.fileGroupId
+			this.fileGroupId,
+			this.url
         );
 	}
 	
