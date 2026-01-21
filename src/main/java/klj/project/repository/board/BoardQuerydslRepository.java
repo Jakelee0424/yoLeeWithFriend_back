@@ -131,6 +131,8 @@ public class BoardQuerydslRepository {
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(QBoard.board.delYn.eq("N")); // 기본 조건
+        builder.and(QComment.comment.delYn.eq("N"));
+
 
 
         List<BoardMngrResDto> boardMngrList = queryFactory
@@ -151,8 +153,22 @@ public class BoardQuerydslRepository {
                 )
                 .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
                 .leftJoin(QCode.code).on(QBoard.board.brandCodeId.eq(QCode.code.id))
+                .leftJoin(QComment.comment).on(QBoard.board.boardId.eq(QComment.comment.board.boardId))
                 .limit(5)
-                .orderBy(QBoard.board.readCnt.desc() , QBoard.board.boardId.desc())
+                .groupBy(
+                        QBoard.board.boardId,
+                        QBoard.board.brandCodeId,
+                        QBoard.board.boardName,
+                        QBoard.board.boardCategoryCodeId,
+                        QBoard.board.useYn,
+                        QBoard.board.createDate,
+                        QBoard.board.modifyDate,
+                        QBoard.board.nuinfoId,
+                        QFiles.files.filePath,
+                        QBoard.board.readCnt
+                )
+                .orderBy(QComment.comment.ingredientRate.add(QComment.comment.priceRate)
+                        .add(QComment.comment.tasteRate).divide(3).avg().desc() , QBoard.board.boardId.desc())
                 .fetch();
 
         return boardMngrList;

@@ -51,5 +51,7 @@ public class Comment {
         this.tasteRate = tasteRate;
         this.priceRate = priceRate;
         this.ingredientRate = ingredientRate;
+        this.delYn ="N";
+        this.regDt = LocalDateTime.now();
     }
 }

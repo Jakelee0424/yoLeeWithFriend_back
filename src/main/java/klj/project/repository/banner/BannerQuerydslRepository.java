@@ -45,7 +45,8 @@ public class BannerQuerydslRepository {
                         QBanner.banner.createdAt,
                         QBanner.banner.delYn,
                         QBanner.banner.fileGroupId,
-                        QFiles.files.filePath.as("imgUrl")
+                        QFiles.files.filePath.as("imgUrl"),
+						QBanner.banner.url
                 )).from(QBanner.banner)
                 .where(notDeletedAndValid)
                 .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBanner.banner.fileGroupId))

@@ -2,11 +2,16 @@ package klj.project.repository.util;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import klj.project.domain.board.QBoard;
+import klj.project.domain.file.QFiles;
 import klj.project.domain.util.QLogs;
 import klj.project.domain.util.QLogsUser;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.admin.common.PageReqDto;
 import klj.project.web.dto.admin.util.LogsResDto;
+import klj.project.web.dto.user.board.BoardResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -108,6 +113,43 @@ public class LogsUserQuerydslRepository {
                 .fetchOne();
 
         return logsListCount;
+    }
+
+
+
+    public List<BoardMngrResDto> findAllUserBoardLogsList (Long userId){
+
+
+
+        List<BoardMngrResDto> logsList = queryFactory
+                .select(Projections.fields(BoardMngrResDto.class,
+                        QBoard.board.boardName,
+                        QBoard.board.boardId,
+                        QBoard.board.boardCategoryCodeId,
+                        QBoard.board.createDate,
+                        QBoard.board.brandCodeId,
+                        QBoard.board.fileGroupId,
+                        QFiles.files.filePath.as("imgUrl")
+                )).from(QLogsUser.logsUser)
+                .leftJoin(QBoard.board)
+                .on(QBoard.board.boardId.stringValue().eq(
+                        Expressions.stringTemplate(
+                                "REPLACE({0}, {1}, {2})",
+                                QLogsUser.logsUser.description,
+                                "?boardId=",
+                                ""
+                        )
+                ))
+                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .where(
+                        QLogsUser.logsUser.userId.eq(userId),
+                        QLogsUser.logsUser.description.ne("")
+                )
+                .limit(5)
+                .orderBy(QLogsUser.logsUser.createdDate.desc(),QLogsUser.logsUser.id.desc())
+                .fetch();
+
+        return logsList;
     }
 
 

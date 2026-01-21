@@ -52,4 +52,9 @@ public class LogsService {
         return allUserLogsList;
     }
 
+    public List<BoardMngrResDto> findUserBoardLogsList(Long userId){
+        List<BoardMngrResDto> allUserLogsList = logsUserQuerydslRepository.findAllUserBoardLogsList(userId);
+        return allUserLogsList;
+    }
+
 }
