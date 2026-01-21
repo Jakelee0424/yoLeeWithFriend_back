@@ -236,8 +236,8 @@ public class LogsController {
 
     }
 
-    @GetMapping("/logs/user/{userId}")
-    public KljResponse<List<BoardMngrResDto>> findUserBoardLogsList(@PathVariable("id") Long userId) {
+    @GetMapping("/logs/user")
+    public KljResponse<List<BoardMngrResDto>> findUserBoardLogsList(@RequestParam Long userId) {
 
         try {
             List<BoardMngrResDto> logsList = logsService.findUserBoardLogsList(userId);
