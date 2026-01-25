@@ -1,8 +1,13 @@
 package klj.project.repository.file;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import klj.project.domain.board.QBoard;
+import klj.project.domain.board.QComment;
 import klj.project.domain.file.Files;
+import klj.project.domain.file.QFiles;
+import klj.project.web.dto.admin.board.BoardMngrResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,4 +40,7 @@ public class FileQuerydslRepository {
                 .fetch();
         return FilesList;
     }
+
+
+
 }

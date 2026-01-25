@@ -14,4 +14,5 @@ public class CommentReqDto {
     private Integer tasteRate;
     private Integer priceRate;
     private Integer ingredientRate;
+    private Long commentId;
 }

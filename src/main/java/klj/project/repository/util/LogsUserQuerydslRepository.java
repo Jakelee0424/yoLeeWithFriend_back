@@ -3,6 +3,7 @@ package klj.project.repository.util;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import klj.project.domain.board.QBoard;
 import klj.project.domain.file.QFiles;
@@ -119,7 +120,7 @@ public class LogsUserQuerydslRepository {
 
     public List<BoardMngrResDto> findAllUserBoardLogsList (Long userId){
 
-
+        QFiles filesSubQuery = new QFiles("filesSubQuery");  // 별도 alias 생성
 
         List<BoardMngrResDto> logsList = queryFactory
                 .select(Projections.fields(BoardMngrResDto.class,
@@ -130,23 +131,27 @@ public class LogsUserQuerydslRepository {
                         QBoard.board.brandCodeId,
                         QBoard.board.fileGroupId,
                         QFiles.files.filePath.as("imgUrl")
-                )).from(QLogsUser.logsUser)
-                .leftJoin(QBoard.board)
-                .on(QBoard.board.boardId.stringValue().eq(
-                        Expressions.stringTemplate(
-                                "REPLACE({0}, {1}, {2})",
-                                QLogsUser.logsUser.description,
-                                "?boardId=",
-                                ""
-                        )
                 ))
-                .leftJoin(QFiles.files).on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId))
+                .from(QLogsUser.logsUser)
+                .leftJoin(QBoard.board)
+                .on(QBoard.board.boardId.eq(
+                        QLogsUser.logsUser.boardId
+                ))
+                .leftJoin(QFiles.files)
+                .on(QFiles.files.fileGroup.id.eq(QBoard.board.fileGroupId)
+                        .and(QFiles.files.id.eq(
+                                JPAExpressions.select(filesSubQuery.id.min())
+                                        .from(filesSubQuery)
+                                        .where(filesSubQuery.fileGroup.id.eq(QBoard.board.fileGroupId))
+                        ))
+                )
                 .where(
                         QLogsUser.logsUser.userId.eq(userId),
-                        QLogsUser.logsUser.description.ne("")
+                        QLogsUser.logsUser.boardId.isNotNull(),
+                        QLogsUser.logsUser.boardId.ne(0L)
                 )
+                .orderBy(QLogsUser.logsUser.createdDate.desc(), QLogsUser.logsUser.id.desc())
                 .limit(5)
-                .orderBy(QLogsUser.logsUser.createdDate.desc(),QLogsUser.logsUser.id.desc())
                 .fetch();
 
         return logsList;

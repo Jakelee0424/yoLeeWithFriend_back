@@ -5,7 +5,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import klj.project.domain.board.Board;
 import klj.project.domain.board.Comment;
+import klj.project.domain.file.Files;
 import klj.project.domain.user.user.User;
+import klj.project.repository.file.FileRepository;
+import klj.project.repository.user.board.CommentQuerydslRepository;
 import klj.project.repository.user.board.CommentRepository;
 import klj.project.service.user.baord.BoardService;
 import klj.project.service.user.baord.CommentService;
@@ -32,7 +35,8 @@ public class BoardController {
     // 게시물 한줄평 서비스
     private final CommentService commentService;
     private final CommentRepository commentRepository;
-
+    private final CommentQuerydslRepository  commentQuerydslRepository;
+    private final FileRepository fileRepository;
     @PersistenceContext
     private EntityManager em;
 
@@ -232,11 +236,23 @@ public class BoardController {
     }
 
     @GetMapping("/board/getBoardCommentByUserId")
-    public KljResponse<List<CommentResDto>> getBoardCommentByUserId(@RequestParam Long userId) {
+    public KljResponse<List<CommentResDto>> getBoardCommentByUserId(@RequestParam Long userId, @RequestParam String brandCodeId) {
         try {
-            List<Comment> commentList = commentRepository.findFirst3ByUserIdAndDelYnOrderByCommentIdDesc(userId, "N");
+            List<Comment> commentList = commentRepository.findFirst3ByUserIdAndDelYnAndBoard_BoardCategoryCodeIdOrderByCommentIdDesc(userId, "N", brandCodeId);
+            //List<Comment> commentList = commentQuerydslRepository.findFirst3ByUserIdAndDelYnWithBoard(userId, "N");
+            //List<CommentWithImageDto> commentList = commentQuerydslRepository.findFirst3ByUserIdAndDelYnWithImage(userId, "N");
             List<CommentResDto> commentResDtoList = commentList.stream()
-                    .map(CommentResDto::fromEntity)
+                    .map(comment -> {
+                        CommentResDto dto = CommentResDto.fromEntity(comment);
+                        // imgUrl 설정
+                        if (comment.getBoard() != null && comment.getBoard().getFileGroupId() != null) {
+                            Long tempfileGroupId = comment.getBoard().getFileGroupId();
+                            Files files = fileRepository.findByFileGroupId(tempfileGroupId).get();
+                            String imgUrl = files.getFilePath();
+                            dto.setImgUrl(imgUrl);
+                        }
+                        return dto;
+                    })
                     .collect(Collectors.toList());
 
             return KljResponse
@@ -248,6 +264,56 @@ public class BoardController {
                     .create()
                     .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 목록조회에 실패하였습니다."))
                     .buildWith(null);
+        }
+    }
+
+    @DeleteMapping("/board/deleteBoardComment")
+    public KljResponse<String> deleteBoardComment(@RequestParam Long commentId) {
+
+        try {
+            // 불필요한 객체 풀로드 없이 프록시만 획득해서 연관관계를 매핑
+            Comment comment = commentRepository.findById(commentId).orElseThrow();
+            Comment deleteComment = comment.deleteComment();
+
+            commentRepository.save(deleteComment);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(commentId.toString());
+        } catch (Exception e) {
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 등록을 실패하였습니다."))
+                    .buildWith(null);
+
+        }
+    }
+
+
+    @PutMapping("/board/modifyComment")
+    public KljResponse<String> modifyBoardComment(@RequestBody CommentReqDto commentReqDto) {
+
+        try {
+            // 불필요한 객체 풀로드 없이 프록시만 획득해서 연관관계를 매핑
+            Long commentId = commentReqDto.getCommentId();
+            Comment comment = commentRepository.findById(commentId).orElseThrow();
+            Comment modifyComment = comment.modifyComment(commentReqDto.getContent(), commentReqDto.getTasteRate(), commentReqDto.getPriceRate(), commentReqDto.getIngredientRate());
+
+            commentRepository.save(modifyComment);
+
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith("Y");
+        } catch (Exception e) {
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 등록을 실패하였습니다."))
+                    .buildWith(null);
+
         }
     }
 }

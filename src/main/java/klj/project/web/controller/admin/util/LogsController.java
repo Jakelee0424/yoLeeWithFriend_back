@@ -73,6 +73,12 @@ public class LogsController {
     public KljResponse<LogsUser> saveUserLogs(@RequestBody LogsSaveDto logsSaveDto) {
 
         try {
+
+            Long boardId = 0L;
+            if(logsSaveDto.getDescription() !=null && logsSaveDto.getDescription() !=""){
+                boardId = Long.parseLong(logsSaveDto.getDescription().replace("?boardId=" ,""));
+            }
+
             LocalDateTime localDateTime = LocalDateTime.now();
             LogsUser logsUser = new LogsUser(
                     logsSaveDto.getUserId(),
@@ -82,7 +88,8 @@ public class LogsController {
                     localDateTime,
                     logsSaveDto.getUrl(),
                     logsSaveDto.getDevice(),
-                    logsSaveDto.getBrowser()
+                    logsSaveDto.getBrowser(),
+                    boardId
             );
             LogsUser saveLogs = logsUserRepository.save(logsUser);
 
