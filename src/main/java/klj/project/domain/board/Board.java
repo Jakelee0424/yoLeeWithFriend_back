@@ -87,7 +87,7 @@ public class Board {
                 this.nuinfoId,
                 "",
                 this.readCnt,
-                String.valueOf(this.fileGroupId)
+                this.fileGroupId
         );
     }
 

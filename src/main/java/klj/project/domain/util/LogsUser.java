@@ -36,8 +36,11 @@ public class LogsUser {
 
     private String browser;
 
+    @Column(name = "board_id")
+    private Long boardId;
+
     @Builder
-    public LogsUser(Long userId, LogsType logsType, String description, String ipAddress, LocalDateTime createdDate, String url, String device, String browser) {
+    public LogsUser(Long userId, LogsType logsType, String description, String ipAddress, LocalDateTime createdDate, String url, String device, String browser, Long boardId) {
         this.userId = userId;
         this.logsType = logsType;
         this.description = description;
@@ -46,6 +49,7 @@ public class LogsUser {
         this.url = url;
         this.device = device;
         this.browser = browser;
+        this.boardId = boardId;
     }
 
     public static LogsUser createLogs (

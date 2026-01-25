@@ -54,4 +54,17 @@ public class Comment {
         this.delYn ="N";
         this.regDt = LocalDateTime.now();
     }
+
+    public Comment deleteComment (){
+        this.delYn = "Y";
+        return this;
+    }
+
+    public Comment modifyComment (String content, Integer tasteRate, Integer priceRate, Integer ingredientRate){
+        this.content = content;
+        this.tasteRate = tasteRate;
+        this.priceRate = priceRate;
+        this.ingredientRate = ingredientRate;
+        return this;
+    }
 }

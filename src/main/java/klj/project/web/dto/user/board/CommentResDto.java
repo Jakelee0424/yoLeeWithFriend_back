@@ -22,6 +22,7 @@ public class CommentResDto {
     private Integer ingredientRate;
     private BoardMngrResDto board;
     private LocalDateTime regDt;
+    private String imgUrl;
 
     public static CommentResDto fromEntity(Comment comment) {
         return CommentResDto.builder()
