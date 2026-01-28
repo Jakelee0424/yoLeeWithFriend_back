@@ -16,4 +16,5 @@ public class UserLoginDto {
     private String profilePath;
     private String oauthType;
     private LocalDateTime regDt;
+    private String status;
 }

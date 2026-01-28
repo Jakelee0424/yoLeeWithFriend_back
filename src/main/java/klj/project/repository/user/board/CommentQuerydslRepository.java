@@ -29,7 +29,10 @@ public class CommentQuerydslRepository {
                         QComment.comment.priceRate.avg().as("avgPriceRate"),
                         QComment.comment.ingredientRate.avg().as("avgIngredientRate")
                 )).from(QComment.comment)
-                .where(QComment.comment.board.boardId.eq(boardId))
+                .where(
+                        QComment.comment.board.boardId.eq(boardId),
+                        QComment.comment.delYn.eq("N")
+                )
                 .fetchOne();
 
         return boardRateResDto;
@@ -54,7 +57,8 @@ public class CommentQuerydslRepository {
                 .leftJoin(QComment.comment.board, QBoard.board)
                 .where(
                         QComment.comment.delYn.eq("N"),
-                        QBoard.board.boardCategoryCodeId.eq("boardCategory02")
+                        QBoard.board.boardCategoryCodeId.eq("boardCategory02"),
+                        QComment.comment.user.id.eq(userId)
                 )
                 .fetchOne();
 
@@ -64,7 +68,8 @@ public class CommentQuerydslRepository {
                 .leftJoin(QComment.comment.board, QBoard.board)
                 .where(
                         QComment.comment.delYn.eq("N"),
-                        QBoard.board.boardCategoryCodeId.eq("boardCategory03")
+                        QBoard.board.boardCategoryCodeId.eq("boardCategory03"),
+                        QComment.comment.user.id.eq(userId)
                 )
                 .fetchOne();
 
