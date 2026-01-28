@@ -137,7 +137,7 @@ public class UserController {
                     Files files = fileRepository.findByFileGroupId(fileGroupId).get();
                     userFilePath = files.getFilePath();
                 }
-                UserLoginDto userDto = new UserLoginDto(loginUser.getId(),loginUser.getNickName(),userFilePath, loginUser.getOauthType().toString(), loginUser.getRegDt());
+                UserLoginDto userDto = new UserLoginDto(loginUser.getId(),loginUser.getNickName(),userFilePath, loginUser.getOauthType().toString(), loginUser.getRegDt(), loginUser.getStatus().toString());
                 return KljResponse.create()
                         .succeed()
                         .buildWith(userDto);
@@ -197,7 +197,7 @@ public class UserController {
                 Files files = fileRepository.findByFileGroupId(tempfileGroupId).get();
                 userFilePath = files.getFilePath();
             }
-            UserLoginDto userDto = new UserLoginDto(changeUser.getId(),changeUser.getNickName(),userFilePath, changeUser.getOauthType().toString(), changeUser.getRegDt());
+            UserLoginDto userDto = new UserLoginDto(changeUser.getId(),changeUser.getNickName(),userFilePath, changeUser.getOauthType().toString(), changeUser.getRegDt(), changeUser.getStatus().toString());
 
             return KljResponse
                     .create()

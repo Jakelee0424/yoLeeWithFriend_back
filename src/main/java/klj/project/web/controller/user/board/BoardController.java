@@ -184,7 +184,17 @@ public class BoardController {
         try {
             List<Comment> commentList = commentRepository.findByBoard_BoardIdAndDelYn(boardId, "N");
             List<CommentResDto> commentResDtoList = commentList.stream()
-                    .map(CommentResDto::fromEntity)
+                    .map(comment -> {
+                        CommentResDto dto = CommentResDto.fromEntity(comment);
+                        // imgUrl 설정
+                        if (comment.getUser() != null && comment.getUser().getFileGroupId() != null) {
+                            Long tempfileGroupId = comment.getUser().getFileGroupId();
+                            Files files = fileRepository.findByFileGroupId(tempfileGroupId).get();
+                            String imgUrl = files.getFilePath();
+                            dto.setImgUrl(imgUrl);
+                        }
+                        return dto;
+                    })
                     .collect(Collectors.toList());
 
             return KljResponse
