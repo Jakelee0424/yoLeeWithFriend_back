@@ -12,5 +12,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findByUserIdAndDelYnAndBoard_BoardCategoryCodeIdOrderByCommentIdDesc(Long userId, String delYn, String brandCodeId, Pageable pageable);
 
-    Long countByUserIdAndDelYn(Long userId, String delYn);
+    Long countByUserIdAndDelYnAndBoard_BoardId(Long userId, String delYn, Long boardId);
+
+    Comment findByCommentIdAndDelYn(Long commentId, String delYn);
+
+    Comment findByUserIdAndDelYnAndBoard_BoardId(Long userId, String delYn, Long boardId);
+
 }
