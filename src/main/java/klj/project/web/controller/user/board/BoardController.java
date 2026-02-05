@@ -18,6 +18,8 @@ import klj.project.web.dto.admin.board.BoardMngrResDto;
 import klj.project.web.dto.user.board.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -246,11 +248,11 @@ public class BoardController {
     }
 
     @GetMapping("/board/getBoardCommentByUserId")
-    public KljResponse<List<CommentResDto>> getBoardCommentByUserId(@RequestParam Long userId, @RequestParam String brandCodeId) {
+    public KljResponse<List<CommentResDto>> getBoardCommentByUserId(@RequestParam Long userId, @RequestParam String brandCodeId, @RequestParam(defaultValue = "0") int page) {
         try {
-            List<Comment> commentList = commentRepository.findFirst3ByUserIdAndDelYnAndBoard_BoardCategoryCodeIdOrderByCommentIdDesc(userId, "N", brandCodeId);
-            //List<Comment> commentList = commentQuerydslRepository.findFirst3ByUserIdAndDelYnWithBoard(userId, "N");
-            //List<CommentWithImageDto> commentList = commentQuerydslRepository.findFirst3ByUserIdAndDelYnWithImage(userId, "N");
+            Pageable pageable = PageRequest.of(page, 3);
+            List<Comment> commentList = commentRepository.findByUserIdAndDelYnAndBoard_BoardCategoryCodeIdOrderByCommentIdDesc(userId, "N", brandCodeId, pageable);
+
             List<CommentResDto> commentResDtoList = commentList.stream()
                     .map(comment -> {
                         CommentResDto dto = CommentResDto.fromEntity(comment);
