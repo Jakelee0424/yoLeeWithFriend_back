@@ -23,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -319,6 +321,54 @@ public class BoardController {
                     .create()
                     .succeed()
                     .buildWith("Y");
+        } catch (Exception e) {
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 등록을 실패하였습니다."))
+                    .buildWith(null);
+
+        }
+    }
+
+    @GetMapping("/board/countByUserIdAndDelYn")
+    public KljResponse<BoardCommentResDto> countByUserIdAndDelYn(@RequestParam Long userId, @RequestParam Long boardId) {
+
+        try {
+            BoardCommentResDto result = new BoardCommentResDto();
+            Comment comment = commentRepository.findByUserIdAndDelYnAndBoard_BoardId(userId, "N", boardId);
+            Long count = commentRepository.countByUserIdAndDelYnAndBoard_BoardId(userId, "N", boardId);
+            Long commentId =0L;
+            if(comment !=null){
+                commentId = comment.getCommentId();
+            }
+            result.setCount(count);
+            result.setCommentId(commentId);
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(result);
+        } catch (Exception e) {
+            log.info(e.toString());
+            return KljResponse
+                    .create()
+                    .fail(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "한줄평 등록을 실패하였습니다."))
+                    .buildWith(null);
+
+        }
+    }
+
+    @GetMapping("/board/commentbyCommentIdAndDelYn")
+    public KljResponse<CommentResDto> getCommentbyCommentIdAndDelYn(@RequestParam Long commentId) {
+
+        try {
+
+            Comment comment = commentRepository.findByCommentIdAndDelYn(commentId, "N");
+            CommentResDto dto = CommentResDto.fromEntity(comment);
+            return KljResponse
+                    .create()
+                    .succeed()
+                    .buildWith(dto);
         } catch (Exception e) {
             log.info(e.toString());
             return KljResponse
